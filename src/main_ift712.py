@@ -3,6 +3,7 @@
 import argparse
 from src.models.SVM_classifier import SVMClassifier
 from src.DataHandler import DataHandler
+from sklearn.model_selection import train_test_split
 
 '''
 Cours IFT712, projet de session
@@ -45,8 +46,6 @@ def main():
     image_path = '../data/sample/images_reduced_folder'
     label_full_path = '../data/sample_labels.csv'
 
-
-
     if verbose:
         print('Formatting dataset...')
     data = DataHandler(image_path=image_path, label_full_path=label_full_path)
@@ -55,8 +54,12 @@ def main():
     if verbose:
         print('Training of the model...')
 
+    train_image, test_image, train_labels, test_labels = train_test_split(image, labels, train_size=0.8, random_state=10)
+    train_data = zip(train_image, train_labels)
+    test_data = zip(test_image, test_labels)
+
     if classifier == 'SVM':
-        model = SVMClassifier()
+        model = SVMClassifier(train_data, test_data)
     # Do this with every models
     else:
         raise SyntaxError('Invalid model name')
