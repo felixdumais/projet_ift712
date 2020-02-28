@@ -42,18 +42,15 @@ def main():
     learning_rate = 0.001
     predict = False
     verbose = True
-    image_path = '../data/sample/images'
-    label_full_path = '../data/sample/sample_labels.csv'
+    image_path = '../data/sample/images_reduced_folder'
+    label_full_path = '../data/sample_labels.csv'
 
 
 
     if verbose:
         print('Formatting dataset...')
-
     data = DataHandler(image_path=image_path, label_full_path=label_full_path)
-
-    # Instanciate a class to format the dataset
-    # This class should manage the dataset
+    image, labels = data.get_data()
 
     if verbose:
         print('Training of the model...')

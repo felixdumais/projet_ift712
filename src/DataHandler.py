@@ -1,14 +1,14 @@
 import os
 import matplotlib.image as mpimg
 import pandas as pd
+from src.utils import unique
+
 
 class DataHandler:
     def __init__(self, label_full_path, image_path):
         self.label_full_path = label_full_path
         self.image_path = image_path
         self.data = self._get_formated_data()
-
-
 
     def _import_png_folder(self):
         image_list = []
@@ -22,17 +22,48 @@ class DataHandler:
 
         return image_list, id_list
 
-
     def _import_csv(self):
         try:
             df = pd.read_csv(self.label_full_path)
         except IOError as e:
             raise e
 
+        df = df.iloc[:, [0, 1]]
+
+        split_data = df['Finding Labels'].str.split('|')
+        list1 = split_data.to_list()
+        flat_list = [item for sublist in list1 for item in sublist]
+        unique_list = unique(flat_list)
+
+        df = pd.concat([df, pd.DataFrame(columns=unique_list)], sort=False)
+
+        for value in unique_list:
+            bool_value = df['Finding Labels'].str.contains(value)
+            df[value] = bool_value.astype(int)
+
+        df = df.drop(labels=['Finding Labels'], axis=1)
+
+        return df
 
     def _get_formated_data(self):
         image_list, id_list = self._import_png_folder()
+        zip_image_list = zip(image_list, id_list)
         labels = self._import_csv()
+
+        labels = labels[labels.iloc[:, 0].isin(id_list)]
+        labels['ordered_id'] = pd.Categorical(labels.iloc[:, 0], categories=id_list, ordered=True)
+        labels.sort_values('ordered_id')
+        labels = labels.drop(labels='ordered_id', axis=1)
+        labels = labels.iloc[:, 1:]
+
+        return image_list, labels
+
+    def get_data(self):
+        return self.data
+
+
+
+
 
 
 
