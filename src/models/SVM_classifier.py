@@ -1,7 +1,7 @@
-from models.Classifier import Classifer
+from src.models.Classifier import Classifier
 
 
-class SVMClassifier(Classifer):
+class SVMClassifier(Classifier):
 
     def __init__(self):
         super().__init__()

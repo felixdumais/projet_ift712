@@ -1,13 +1,17 @@
+from abc import abstractmethod
 
+class Classifier:
+    def __init__(self, data):
+        self.data = data
 
-class Classifer:
-    def __init__(self):
-        pass
-
+    @abstractmethod
     def train(self):
-        print('Training ...')
         pass
 
+    @abstractmethod
     def predict(self):
-        print('Predicting ...')
+        pass
+
+    @abstractmethod
+    def error(self):
         pass

@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 
 import argparse
-from models.SVM_classifier import SVMClassifier
-
+from src.models.SVM_classifier import SVMClassifier
+from src.DataHandler import DataHandler
 
 '''
 Cours IFT712, projet de session
@@ -29,16 +29,28 @@ def argument_parser():
     return parser.parse_args()
 
 def main():
-    args = argument_parser()
+    #args = argument_parser()
 
-    classifier = args.model
-    validation = args.validation
-    learning_rate = args.lr
-    predict = args.predict
-    verbose = args.verbose
+    #classifier = args.model
+    #validation = args.validation
+    #learning_rate = args.lr
+    #predict = args.predict
+    #verbose = args.verbose
+
+    classifier = 'SVM'
+    validation = 0.1
+    learning_rate = 0.001
+    predict = False
+    verbose = True
+    image_path = '../data/sample/images'
+    label_full_path = '../data/sample/sample_labels.csv'
+
+
 
     if verbose:
         print('Formatting dataset...')
+
+    data = DataHandler(image_path=image_path, label_full_path=label_full_path)
 
     # Instanciate a class to format the dataset
     # This class should manage the dataset
