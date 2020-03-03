@@ -2,9 +2,13 @@ from abc import abstractmethod
 
 
 class Classifier:
-    def __init__(self, train_data, test_data):
-        self.train_data = train_data
-        self.test_data = test_data
+    def __init__(self, X_train, X_test, y_train, y_test, loss):
+        self.X_train = X_train
+        self.X_test = X_test
+        self.y_train = y_train
+        self.y_test = y_test
+        self.loss = loss
+
 
     @abstractmethod
     def train(self):
@@ -18,8 +22,19 @@ class Classifier:
     def error(self):
         pass
 
-    def get_train_data(self):
-        return self.train_data
+    @abstractmethod
+    def _research_hyperparameter(self):
+        pass
 
-    def get_test_data(self):
-        return self.test_data
+    def get_x_train(self):
+        return self.X_train
+
+    def get_x_test(self):
+        return self.X_test
+
+    def get_y_train(self):
+        return self.y_train
+
+    def get_y_test(self):
+        return self.y_test
+

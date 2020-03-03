@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
 
 import argparse
-from src.models.SVM_classifier import SVMClassifier
+from src.models.SVMClassifier import SVMClassifier
 from src.DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
+import numpy as np
 
 '''
 Cours IFT712, projet de session
@@ -41,7 +42,7 @@ def main():
     classifier = 'SVM'
     validation = 0.1
     learning_rate = 0.001
-    predict = False
+    predict = True
     verbose = True
     image_path = '../data/sample/images_reduced_folder'
     label_full_path = '../data/sample_labels.csv'
@@ -50,16 +51,21 @@ def main():
         print('Formatting dataset...')
     data = DataHandler(image_path=image_path, label_full_path=label_full_path)
     image, labels = data.get_data()
+    image = data.flatten(image)
 
     if verbose:
         print('Training of the model...')
 
     train_image, test_image, train_labels, test_labels = train_test_split(image, labels, train_size=0.8, random_state=10)
-    train_data = zip(train_image, train_labels)
-    test_data = zip(test_image, test_labels)
+
+    train_image = np.asarray(train_image)
+    test_image = np.asarray(test_image)
+    train_labels = np.asarray(train_labels)
+    test_labels = np.asarray(test_labels)
+
 
     if classifier == 'SVM':
-        model = SVMClassifier(train_data, test_data)
+        model = SVMClassifier(train_image, test_image, train_labels, test_labels, loss='hinge')
     # Do this with every models
     else:
         raise SyntaxError('Invalid model name')
@@ -67,7 +73,7 @@ def main():
     model.train()
 
     if predict:
-        model.predict()
+        predict_label = model.predict()
 
     # Add part where we display some metrics
 

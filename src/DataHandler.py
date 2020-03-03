@@ -17,6 +17,9 @@ class DataHandler:
             if file.endswith(".png"):
                 full_file_path = os.path.join(self.image_path, file)
                 image = mpimg.imread(full_file_path)
+                if image.ndim > 2:
+                    image = image[:, :, 0]
+
                 image_list.append(image)
                 id_list.append(file)
 
@@ -47,7 +50,6 @@ class DataHandler:
 
     def _get_formated_data(self):
         image_list, id_list = self._import_png_folder()
-        zip_image_list = zip(image_list, id_list)
         labels = self._import_csv()
 
         labels = labels[labels.iloc[:, 0].isin(id_list)]
@@ -60,6 +62,11 @@ class DataHandler:
 
     def get_data(self):
         return self.data
+
+    def flatten(self, image: list):
+        image = [x.flatten(order='C') for x in image]
+
+        return image
 
 
 
