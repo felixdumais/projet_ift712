@@ -130,4 +130,6 @@ dmypy.json
 
 data/sample/
 data/sample.zip
+data/sample_labels.csv
+
 .idea/
