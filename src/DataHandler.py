@@ -2,6 +2,8 @@ import os
 import matplotlib.image as mpimg
 import pandas as pd
 from src.utils import unique
+from tqdm import tqdm
+import numpy as np
 
 
 class DataHandler:
@@ -13,15 +15,18 @@ class DataHandler:
     def _import_png_folder(self):
         image_list = []
         id_list = []
-        for file in os.listdir(self.image_path):
-            if file.endswith(".png"):
-                full_file_path = os.path.join(self.image_path, file)
-                image = mpimg.imread(full_file_path)
-                if image.ndim > 2:
-                    image = image[:, :, 0]
+        with tqdm(total=len(os.listdir(self.image_path))) as pbar:
+            for file in os.listdir(self.image_path):
+                if file.endswith(".png"):
+                    full_file_path = os.path.join(self.image_path, file)
+                    image = mpimg.imread(full_file_path)
+                    if image.ndim > 2:
+                        image = image[:, :, 0]
 
-                image_list.append(image)
-                id_list.append(file)
+                    image_list.append(image)
+                    id_list.append(file)
+
+                pbar.update(1)
 
         return image_list, id_list
 
@@ -65,7 +70,6 @@ class DataHandler:
 
     def flatten(self, image: list):
         image = [x.flatten(order='C') for x in image]
-
         return image
 
 
