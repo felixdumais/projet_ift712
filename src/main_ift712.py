@@ -18,7 +18,7 @@ def argument_parser():
     parser = argparse.ArgumentParser(usage='\n python3 main_ift712.py [model]',
                                      description="")
     parser.add_argument('--model', type=str, default="SVM",
-                        choices=["SVM", "MLP", "RandomForest", "LogisticRegressor"])
+                        choices=["SVM", "MLP", "RandomForest", "LogisticRegressor", "all"])
     parser.add_argument('--validation', type=float, default=0.1,
                         help='Percentage of training data to use for validation')
     parser.add_argument('--lr', type=float, default=0.001,
@@ -71,6 +71,7 @@ def main():
         raise SyntaxError('Invalid model name')
 
     model.train()
+
 
     if predict:
         predict_label = model.predict()
