@@ -2,6 +2,7 @@
 
 import argparse
 from src.models.SVMClassifier import SVMClassifier
+from src.models.FisherDiscriminant import FisherDiscriminant
 from src.DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
 import numpy as np
@@ -18,7 +19,7 @@ def argument_parser():
     parser = argparse.ArgumentParser(usage='\n python3 main_ift712.py [model]',
                                      description="")
     parser.add_argument('--model', type=str, default="SVM",
-                        choices=["SVM", "MLP", "RandomForest", "LogisticRegressor", "all"])
+                        choices=["SVM", "Fisher", "MLP", "RandomForest", "LogisticRegressor", "all"])
     parser.add_argument('--validation', type=float, default=0.1,
                         help='Percentage of training data to use for validation')
     parser.add_argument('--lr', type=float, default=0.001,
@@ -39,7 +40,7 @@ def main():
     #predict = args.predict
     #verbose = args.verbose
 
-    classifier = 'SVM'
+    classifier = 'Fisher'
     validation = 0.1
     learning_rate = 0.001
     predict = True
@@ -66,10 +67,15 @@ def main():
 
     if classifier == 'SVM':
         model = SVMClassifier(train_image, test_image, train_labels, test_labels, loss='hinge')
-    # Do this with every models
+    # Do this with every model
     else:
         raise SyntaxError('Invalid model name')
-
+        
+    if classifier == 'Fisher':
+        model = FisherDiscriminant(train_image, test_image, train_labels, test_labels, loss='hinge')
+    else:
+        raise SyntaxError('Invalid model name')
+        
     model.train()
 
 
