@@ -16,8 +16,8 @@ class FisherDiscriminant(Classifier):
         self.kfolded = False
 
     def train(self):
-        if self.kfolded is False:
-            self._research_hyperparameter()
+        #if self.kfolded is False:
+        #    self._research_hyperparameter()
         self.classifier.fit(self.X_train, self.y_train)
 
     def predict(self):
