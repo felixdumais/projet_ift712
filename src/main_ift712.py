@@ -5,6 +5,7 @@ from src.models.SVMClassifier import SVMClassifier
 from src.DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
 import numpy as np
+import os
 
 '''
 Cours IFT712, projet de session
@@ -46,6 +47,8 @@ def main():
     verbose = True
     image_path = '../data/sample/images_reduced_folder'
     label_full_path = '../data/sample_labels.csv'
+
+
 
     if verbose:
         print('Formatting dataset...')
