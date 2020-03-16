@@ -4,6 +4,7 @@ import pandas as pd
 from src.utils import unique
 from tqdm import tqdm
 import numpy as np
+import cv2
 
 
 class DataHandler:
@@ -23,6 +24,7 @@ class DataHandler:
                     if image.ndim > 2:
                         image = image[:, :, 0]
 
+                    image = self.resample_image(image, 128, 128)
                     image_list.append(image)
                     id_list.append(file)
 
@@ -75,6 +77,11 @@ class DataHandler:
     def flatten(self, image: list):
         image = [x.flatten(order='C') for x in image]
         return image
+
+    def resample_image(self, image, width: int, heigth: int):
+        resampled = cv2.resize(image, dsize=(width, heigth), interpolation=cv2.INTER_NEAREST)
+        return resampled
+
 
 
 
