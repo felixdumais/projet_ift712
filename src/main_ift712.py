@@ -51,18 +51,12 @@ def main():
         print('Formatting dataset...')
     data = DataHandler(image_path=image_path, label_full_path=label_full_path)
     image, labels = data.get_data()
-    image = data.flatten(image)
+
 
     if verbose:
         print('Training of the model...')
 
     train_image, test_image, train_labels, test_labels = train_test_split(image, labels, train_size=0.8, random_state=10)
-
-    train_image = np.asarray(train_image)
-    test_image = np.asarray(test_image)
-    train_labels = np.asarray(train_labels)
-    test_labels = np.asarray(test_labels)
-
 
     if classifier == 'SVM':
         model = SVMClassifier(train_image, test_image, train_labels, test_labels, loss='hinge')

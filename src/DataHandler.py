@@ -63,7 +63,11 @@ class DataHandler:
         labels = labels.drop(labels='ordered_id', axis=1)
         labels = labels.iloc[:, 1:]
 
-        return image_list, labels
+        image_list = self.flatten(image_list)
+        image_flatten_array = np.asarray(image_list)
+        labels = np.asarray(labels)
+
+        return image_flatten_array, labels
 
     def get_data(self):
         return self.data
