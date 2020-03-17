@@ -49,7 +49,6 @@ def main():
     label_full_path = '../data/sample_labels.csv'
 
 
-
     if verbose:
         print('Formatting dataset...')
     data = DataHandler(image_path=image_path, label_full_path=label_full_path)

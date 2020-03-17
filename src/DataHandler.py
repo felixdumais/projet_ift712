@@ -5,13 +5,39 @@ from src.utils import unique
 from tqdm import tqdm
 import numpy as np
 import cv2
+import zipfile
+import shutil
 
 
 class DataHandler:
     def __init__(self, label_full_path, image_path):
+        self._download()
         self.label_full_path = label_full_path
         self.image_path = image_path
         self.data = self._get_formated_data()
+
+    def _download(self):
+        check_dir = '../data/sample'
+        if os.path.isdir(check_dir):
+            print('Files already downloaded')
+            return None
+
+        os.system('kaggle datasets download -d nih-chest-xrays/sample')
+
+        save_directory = '../data'
+        if not os.path.isdir(save_directory):
+            os.mkdir(save_directory)
+
+        zip_file = 'sample.zip'
+
+        print('Extracting zip file ...')
+        with zipfile.ZipFile(zip_file, 'r') as zip_obj:
+            zip_obj.extractall(save_directory)
+
+        os.remove(zip_file)
+        shutil.rmtree('../data/sample/sample')
+
+        print('File extracted')
 
     def _import_png_folder(self):
         image_list = []
