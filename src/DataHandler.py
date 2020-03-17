@@ -24,7 +24,7 @@ class DataHandler:
                     if image.ndim > 2:
                         image = image[:, :, 0]
 
-                    image = self.resample_image(image, 128, 128)
+                    image = self.resample_image(image, 64, 64)
                     image_list.append(image)
                     id_list.append(file)
 
