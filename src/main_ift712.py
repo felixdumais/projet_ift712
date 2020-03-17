@@ -2,6 +2,8 @@
 
 import argparse
 from src.models.SVMClassifier import SVMClassifier
+from src.models.MLP import MLP
+
 from src.DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
 import numpy as np
@@ -40,7 +42,7 @@ def main():
     #predict = args.predict
     #verbose = args.verbose
 
-    classifier = 'SVM'
+    classifier = 'MLP'
     validation = 0.1
     learning_rate = 0.001
     predict = True
@@ -63,6 +65,9 @@ def main():
 
     if classifier == 'SVM':
         model = SVMClassifier(train_image, test_image, train_labels, test_labels, loss='hinge')
+
+    elif classifier == 'MLP':
+        model = MLP(train_image, test_image, train_labels, test_labels, loss=None)
     # Do this with every models
     else:
         raise SyntaxError('Invalid model name')
