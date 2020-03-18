@@ -4,6 +4,7 @@ import argparse
 from src.models.SVMClassifier import SVMClassifier
 from src.DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
+from src.Metrics import Metrics
 import numpy as np
 import os
 
@@ -45,9 +46,9 @@ def main():
     learning_rate = 0.001
     predict = True
     verbose = True
+    metrics = True
     image_path = '../data/sample/images_reduced_folder'
     label_full_path = '../data/sample_labels.csv'
-
 
 
     if verbose:
@@ -68,13 +69,15 @@ def main():
         raise SyntaxError('Invalid model name')
 
     model.train()
-
-
-    if predict:
-        predict_label = model.predict()
-
-    # Add part where we display some metrics
-
+    predict_label = model.predict()
+    metrics = Metrics()
+    FPR = metrics.false_positive_rate(test_labels, predict_label)
+    FNR = metrics.false_negative_rate(test_labels, predict_label)
+    recall = metrics.recall(test_labels, predict_label)
+    precision = metrics.precision(test_labels, predict_label)
+    specificity = metrics.specificity(test_labels, predict_label)
+    accuracy = metrics.accuracy(test_labels, predict_label)
+    f_measure = metrics.f_measure(test_labels, predict_label)
 
 if __name__ == '__main__':
     main()
