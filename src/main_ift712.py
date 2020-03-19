@@ -6,6 +6,8 @@ from src.models.MLP import MLP
 
 from src.DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
+from src.Metrics import Metrics
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 
@@ -47,21 +49,25 @@ def main():
     learning_rate = 0.001
     predict = True
     verbose = True
+    metrics = True
     image_path = '../data/sample/images_reduced_folder'
-    label_full_path = '../data/sample_labels.csv'
-
+    label_full_path = '../data/sample/sample_labels.csv'
 
 
     if verbose:
         print('Formatting dataset...')
     data = DataHandler(image_path=image_path, label_full_path=label_full_path)
-    image, labels = data.get_data()
+    image_all, labels_all = data.get_all_data()
+    _, labels_bool = data.get_sick_bool_data()
+    image_sick, labels_sick = data.get_only_sick_data()
+    data.plot_data()
+    data.show_samples()
 
 
     if verbose:
         print('Training of the model...')
 
-    train_image, test_image, train_labels, test_labels = train_test_split(image, labels, train_size=0.8, random_state=10)
+    train_image, test_image, train_labels, test_labels = train_test_split(image_all, labels_all, train_size=0.8, random_state=10)
 
     if classifier == 'SVM':
         model = SVMClassifier(train_image, test_image, train_labels, test_labels, loss='hinge')
@@ -73,12 +79,55 @@ def main():
         raise SyntaxError('Invalid model name')
 
     model.train()
+    svm = model.get_model()
+    svm_proba = svm.predict_proba(test_image)
+    svm_pred = svm.predict(test_image)
+    #predict_label = model.predict()
+    metrics = Metrics()
 
+    fpr, tpr = metrics.roc_metrics(test_labels, svm_proba)
+    plt.figure()
+    plt.plot(fpr, tpr)
+    plt.title('ROC Curve')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.show(block=False)
 
-    if predict:
-        predict_label = model.predict()
+    precision, recall = metrics.precision_recall(test_labels, svm_proba)
+    plt.figure()
+    plt.plot(precision, recall)
+    plt.title('Precision-Recall Curve')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.show(block=False)
 
-    # Add part where we display some metrics
+    cohen_kappa_score, kappa_class = metrics.cohen_kappa_score(test_labels, svm_pred)
+    f1_score, f1_class = metrics.f1_score(test_labels, svm_pred)
+    accuracy, accuracy_class = metrics.accuracy(test_labels, svm_pred)
+    precision, precision_class = metrics.precision(test_labels, svm_pred)
+    recall, recall_class = metrics.recall(test_labels, svm_pred)
+
+    print('Cohen: {}'.format(cohen_kappa_score))
+    print('F1: {}'.format(f1_score))
+    print('Accuracy: {}'.format(accuracy))
+    print('Precision: {}'.format(precision))
+    print('Recall: {}'.format(recall))
+
+    titles = ['names', 'Cohen', 'F1_score', 'Accuracy', 'Precision', 'Recall']
+    kappa_class = ['%.4f' % elem for elem in kappa_class]
+    f1_class = ['%.4f' % elem for elem in f1_class]
+    accuracy_class = ['%.4f' % elem for elem in accuracy_class]
+    precision_class = ['%.4f' % elem for elem in precision_class]
+    recall_class = ['%.4f' % elem for elem in recall_class]
+    element = [titles] + list(zip(data.label_.columns.values.tolist(), kappa_class, f1_class, accuracy_class, precision_class, recall_class))
+    for i, d in enumerate(element):
+        line = '        |'.join(str(x).ljust(12) for x in d)
+        print(line)
+        if i == 0:
+            print('-' * len(line))
+
+    # class_names = data.label_.columns.values.tolist()
+    # metrics.plot_confusion_matrix(test_labels, svm_pred, class_names)
 
 
 if __name__ == '__main__':
