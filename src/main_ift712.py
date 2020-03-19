@@ -49,19 +49,23 @@ def main():
     verbose = True
     metrics = True
     image_path = '../data/sample/images_reduced_folder'
-    label_full_path = '../data/sample_labels.csv'
+    label_full_path = '../data/sample/sample_labels.csv'
 
 
     if verbose:
         print('Formatting dataset...')
     data = DataHandler(image_path=image_path, label_full_path=label_full_path)
-    image, labels = data.get_data()
+    image_all, labels_all = data.get_all_data()
+    _, labels_bool = data.get_sick_bool_data()
+    image_sick, labels_sick = data.get_only_sick_data()
+    data.plot_data()
+    data.show_samples()
 
 
     if verbose:
         print('Training of the model...')
 
-    train_image, test_image, train_labels, test_labels = train_test_split(image, labels, train_size=0.8, random_state=10)
+    train_image, test_image, train_labels, test_labels = train_test_split(image_all, labels_all, train_size=0.8, random_state=10)
 
     if classifier == 'SVM':
         model = SVMClassifier(train_image, test_image, train_labels, test_labels, loss='hinge')
