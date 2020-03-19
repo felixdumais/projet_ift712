@@ -79,5 +79,15 @@ def main():
     accuracy = metrics.accuracy(test_labels, predict_label)
     f_measure = metrics.f_measure(test_labels, predict_label)
 
+    print('FPR: {}'.format(FPR))
+    print('FNR: {}'.format(FNR))
+    print('recall: {}'.format(recall))
+    print('precision: {}'.format(precision))
+    print('specificity: {}'.format(specificity))
+    print('accuracy: {}'.format(accuracy))
+    print('f_measure: {}'.format(f_measure))
+
+    print('--end--')
+
 if __name__ == '__main__':
     main()

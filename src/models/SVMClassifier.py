@@ -14,10 +14,11 @@ import numpy as np
 class SVMClassifier(Classifier):
     def __init__(self, X_train, X_test, y_train, y_test, loss, cv=True):
         super().__init__(X_train, X_test, y_train, y_test, loss)
-        svm = SVC(C=1,
+        svm = SVC(C=10,
                   degree=3,
-                  kernel='linear',
+                  kernel='rbf',
                   verbose=False,
+                  gamma=0.01,
                   tol=0.001,
                   max_iter=-1)
         self.classifier = OneVsRestClassifier(estimator=svm, n_jobs=-1)
@@ -45,38 +46,16 @@ class SVMClassifier(Classifier):
         return self.classifier
 
     def _research_hyperparameter(self):
-        # current_score = None
-        # for i in range(2):
-        #     C = 0.000001*10**i
-        #     for j in range(2):
-        #         gamma = 0.000001*10**j
-        #         self.classifier.set_params(estimator__C=C, estimator__gamma=gamma)
-        #         scores = cross_val_score(self.classifier, self.X_train, self.y_train, cv=3, verbose=False, n_jobs=-1)
-        #
-        #         mean_score = scores.mean()
-        #         print('C = {}'.format(C))
-        #         print('gamma = {}'.format(gamma))
-        #         print('scores = {}'.format(scores))
-        #         print('mean_scores = {}'.format(mean_score))
-        #         if current_score is None:
-        #             best_C = C
-        #             best_gamma = gamma
-        #             current_score = mean_score
-        #         elif mean_score > current_score:
-        #             best_C = C
-        #             best_gamma = gamma
-        #             current_score = mean_score
-        #
-        # self.classifier.set_params(estimator__C=best_C, estimator__gamma=best_gamma)
-        # self.classifier.fit(self.X_train, self.y_train)
 
         C = [1.*10**x for x in list(range(3))]
-        gamma = [0.01*10**x for x in list(range(3))]
+        gamma = [0.000001*10**x for x in list(range(5))]
         degree = [x for x in list(range(3, 6))]
         kernel = ['linear', 'rbf', 'poly']
-        parameters = [{'estimator__C': C, 'estimator__kernel': [kernel[0]]},
-                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]},
-                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__degree': degree, 'estimator__kernel': [kernel[2]]}]
+        # parameters = [{'estimator__C': C, 'estimator__kernel': [kernel[0]]},
+        #               {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]},
+        #               {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__degree': degree, 'estimator__kernel': [kernel[2]]}]
+
+        parameters = [{'estimator__C': [10], 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]}]
 
         self.classifier = GridSearchCV(self.classifier, parameters,
                                        n_jobs=-1,
