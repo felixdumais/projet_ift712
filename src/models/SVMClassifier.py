@@ -1,17 +1,9 @@
 from src.models.Classifier import Classifier
 from sklearn.multiclass import OneVsRestClassifier
-from sklearn.multioutput import MultiOutputClassifier
 from sklearn.svm import SVC
-from sklearn.model_selection import cross_val_score
-from skmultilearn.problem_transform import BinaryRelevance
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import cohen_kappa_score, make_scorer
-from src.Metrics import Metrics
 
-
-from sklearn.model_selection import train_test_split
-import pandas as pd
-import numpy as np
 
 
 class SVMClassifier(Classifier):
