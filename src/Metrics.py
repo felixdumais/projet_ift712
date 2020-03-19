@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve
 
 class Metrics:
     def __init__(self):
@@ -70,14 +71,12 @@ class Metrics:
 
         return TP, TN, FP, FN
 
-    def plot_ROC(self, recall: list, FPR: list):
-        plt.figure()
-        plt.title('ROC curve')
-        plt.xlabel('False positive rate')
-        plt.ylabel('Recall')
+    def plot_ROC(self, y_true, y_proba):
+        y_true = y_true.flatten(order='C')
+        y_proba = y_proba.flatten(order='C')
 
-        plt.plot(FPR, recall, 'ro--')
-        plt.show(block=False)
+        fpr, tpr, _ = roc_curve(y_true, y_proba)
+
 
     def plot_prec_rec(self, precision: list, recall: list):
         plt.figure()
