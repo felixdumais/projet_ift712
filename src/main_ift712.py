@@ -76,6 +76,7 @@ def main():
     model.train()
     svm = model.get_model()
     svm_proba = svm.predict_proba(test_image)
+    svm_pred = svm.predict(test_image)
     #predict_label = model.predict()
     metrics = Metrics()
 
@@ -85,9 +86,43 @@ def main():
     plt.title('ROC Curve')
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
+    plt.show(block=False)
 
-    class_names = data.labels_
-    metrics.plot_confusion_matrix(model, test_image, test_labels, class_names)
+    precision, recall = metrics.precision_recall(test_labels, svm_proba)
+    plt.figure()
+    plt.plot(precision, recall)
+    plt.title('Precision-Recall Curve')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.show(block=False)
+
+    cohen_kappa_score, kappa_class = metrics.cohen_kappa_score(test_labels, svm_pred)
+    f1_score, f1_class = metrics.f1_score(test_labels, svm_pred)
+    accuracy, accuracy_class = metrics.accuracy(test_labels, svm_pred)
+    precision, precision_class = metrics.precision(test_labels, svm_pred)
+    recall, recall_class = metrics.recall(test_labels, svm_pred)
+
+    print('Cohen: {}'.format(cohen_kappa_score))
+    print('F1: {}'.format(f1_score))
+    print('Accuracy: {}'.format(accuracy))
+    print('Precision: {}'.format(precision))
+    print('Recall: {}'.format(recall))
+
+    titles = ['names', 'Cohen', 'F1_score', 'Accuracy', 'Precision', 'Recall']
+    kappa_class = ['%.4f' % elem for elem in kappa_class]
+    f1_class = ['%.4f' % elem for elem in f1_class]
+    accuracy_class = ['%.4f' % elem for elem in accuracy_class]
+    precision_class = ['%.4f' % elem for elem in precision_class]
+    recall_class = ['%.4f' % elem for elem in recall_class]
+    element = [titles] + list(zip(data.label_.columns.values.tolist(), kappa_class, f1_class, accuracy_class, precision_class, recall_class))
+    for i, d in enumerate(element):
+        line = '        |'.join(str(x).ljust(12) for x in d)
+        print(line)
+        if i == 0:
+            print('-' * len(line))
+
+    # class_names = data.label_.columns.values.tolist()
+    # metrics.plot_confusion_matrix(test_labels, svm_pred, class_names)
 
 
 if __name__ == '__main__':
