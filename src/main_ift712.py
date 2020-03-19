@@ -5,6 +5,7 @@ from src.models.SVMClassifier import SVMClassifier
 from src.DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
 from src.Metrics import Metrics
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 
@@ -69,25 +70,21 @@ def main():
         raise SyntaxError('Invalid model name')
 
     model.train()
-    predict_label = model.predict()
+    svm = model.get_model()
+    svm_proba = svm.predict_proba(test_image)
+    #predict_label = model.predict()
     metrics = Metrics()
-    FPR = metrics.false_positive_rate(test_labels, predict_label)
-    FNR = metrics.false_negative_rate(test_labels, predict_label)
-    recall = metrics.recall(test_labels, predict_label)
-    precision = metrics.precision(test_labels, predict_label)
-    specificity = metrics.specificity(test_labels, predict_label)
-    accuracy = metrics.accuracy(test_labels, predict_label)
-    f_measure = metrics.f_measure(test_labels, predict_label)
 
-    print('FPR: {}'.format(FPR))
-    print('FNR: {}'.format(FNR))
-    print('recall: {}'.format(recall))
-    print('precision: {}'.format(precision))
-    print('specificity: {}'.format(specificity))
-    print('accuracy: {}'.format(accuracy))
-    print('f_measure: {}'.format(f_measure))
+    fpr, tpr = metrics.roc_metrics(test_labels, svm_proba)
+    plt.figure()
+    plt.plot(fpr, tpr)
+    plt.title('ROC Curve')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
 
-    print('--end--')
+    class_names = data.labels_
+    metrics.plot_confusion_matrix(model, test_image, test_labels, class_names)
+
 
 if __name__ == '__main__':
     main()

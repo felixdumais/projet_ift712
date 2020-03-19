@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve
+from sklearn.metrics import plot_confusion_matrix
+from sklearn.metrics import precision_recall_curve
 
 class Metrics:
     def __init__(self):
@@ -56,27 +58,26 @@ class Metrics:
 
         return f_measure
 
-    def confusion_matrix(self, y_true, y_pred):
-        # True Positive (TP): we predict a label of 1 (positive), and the true label is 1.
-        TP = np.sum(np.logical_and(y_pred == 1, y_true == 1))
+    def plot_confusion_matrix(self, classifier, X_test, y_test, class_names):
+        titles_options = [("Confusion matrix, without normalization", None),
+                          ("Normalized confusion matrix", 'true')]
+        for title, normalize in titles_options:
+            disp = plot_confusion_matrix(classifier, X_test, y_test,
+                                         display_labels=class_names,
+                                         cmap=plt.cm.Blues,
+                                         normalize=normalize)
+            disp.ax_.set_title(title)
 
-        # True Negative (TN): we predict a label of 0 (negative), and the true label is 0.
-        TN = np.sum(np.logical_and(y_pred == 0, y_true == 0))
+            print(title)
+            print(disp.confusion_matrix)
 
-        # False Positive (FP): we predict a label of 1 (positive), but the true label is 0.
-        FP = np.sum(np.logical_and(y_pred == 1, y_true == 0))
-
-        # False Negative (FN): we predict a label of 0 (negative), but the true label is 1.
-        FN = np.sum(np.logical_and(y_pred == 0, y_true == 1))
-
-        return TP, TN, FP, FN
-
-    def plot_ROC(self, y_true, y_proba):
+    def roc_metrics(self, y_true, y_proba):
         y_true = y_true.flatten(order='C')
         y_proba = y_proba.flatten(order='C')
 
         fpr, tpr, _ = roc_curve(y_true, y_proba)
 
+        return fpr, tpr
 
     def plot_prec_rec(self, precision: list, recall: list):
         plt.figure()

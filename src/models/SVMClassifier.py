@@ -6,6 +6,7 @@ from sklearn.model_selection import cross_val_score
 from skmultilearn.problem_transform import BinaryRelevance
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import cohen_kappa_score, make_scorer
+from src.Metrics import Metrics
 
 
 from sklearn.model_selection import train_test_split
@@ -14,7 +15,7 @@ import numpy as np
 
 
 class SVMClassifier(Classifier):
-    def __init__(self, X_train, X_test, y_train, y_test, loss, cv=True):
+    def __init__(self, X_train, X_test, y_train, y_test, loss, cv=False):
         super().__init__(X_train, X_test, y_train, y_test, loss)
         svm = SVC(C=10,
                   degree=3,
@@ -22,9 +23,11 @@ class SVMClassifier(Classifier):
                   verbose=False,
                   gamma=0.01,
                   tol=0.001,
+                  probability=True,
                   max_iter=-1)
         self.classifier = OneVsRestClassifier(estimator=svm, n_jobs=-1)
         self.cv = cv
+        self.trained = False
 
     def train(self):
         if self.cv is True:
@@ -32,8 +35,8 @@ class SVMClassifier(Classifier):
         else:
             self.classifier.fit(self.X_train, self.y_train)
 
-    def predict(self):
-        y_pred = self.classifier.predict(self.X_test)
+    def predict(self, image_to_predict):
+        y_pred = self.classifier.predict(image_to_predict)
 
         boolean_vector = y_pred[:, 5] == 1
         y_pred[boolean_vector, :] = 0
@@ -46,9 +49,6 @@ class SVMClassifier(Classifier):
 
     def get_model(self):
         return self.classifier
-
-    def plot_metric(self):
-        pass
 
     def _research_hyperparameter(self):
 

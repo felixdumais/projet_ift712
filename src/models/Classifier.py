@@ -15,7 +15,7 @@ class Classifier:
         pass
 
     @abstractmethod
-    def predict(self):
+    def predict(self, image_to_predict):
         pass
 
     @abstractmethod
