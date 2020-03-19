@@ -5,6 +5,8 @@ from sklearn.svm import SVC
 from sklearn.model_selection import cross_val_score
 from skmultilearn.problem_transform import BinaryRelevance
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import cohen_kappa_score, make_scorer
+
 
 from sklearn.model_selection import train_test_split
 import pandas as pd
@@ -45,6 +47,9 @@ class SVMClassifier(Classifier):
     def get_model(self):
         return self.classifier
 
+    def plot_metric(self):
+        pass
+
     def _research_hyperparameter(self):
 
         C = [1.*10**x for x in list(range(3))]
@@ -57,12 +62,14 @@ class SVMClassifier(Classifier):
 
         parameters = [{'estimator__C': [10], 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]}]
 
+        kappa_scorer = make_scorer(cohen_kappa_score)
         self.classifier = GridSearchCV(self.classifier, parameters,
                                        n_jobs=-1,
                                        verbose=2,
                                        cv=3,
                                        return_train_score=True,
-                                       scoring='precision_macro')
+                                       scoring=kappa_scorer)
+
         self.classifier.fit(self.X_train, self.y_train)
         print('Cross validation result')
         print(self.classifier.cv_results_)
