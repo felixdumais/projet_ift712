@@ -48,11 +48,9 @@ class SVMClassifier(Classifier):
         gamma = [0.000001*10**x for x in list(range(5))]
         degree = [x for x in list(range(3, 6))]
         kernel = ['linear', 'rbf', 'poly']
-        # parameters = [{'estimator__C': C, 'estimator__kernel': [kernel[0]]},
-        #               {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]},
-        #               {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__degree': degree, 'estimator__kernel': [kernel[2]]}]
-
-        parameters = [{'estimator__C': [10], 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]}]
+        parameters = [{'estimator__C': C, 'estimator__kernel': [kernel[0]]},
+                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]},
+                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__degree': degree, 'estimator__kernel': [kernel[2]]}]
 
         kappa_scorer = make_scorer(cohen_kappa_score)
         self.classifier = GridSearchCV(self.classifier, parameters,

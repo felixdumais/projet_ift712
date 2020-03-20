@@ -1,7 +1,6 @@
 from src.models.Classifier import Classifier
 from sklearn.neural_network import MLPClassifier
-from sklearn.multioutput import MultiOutputClassifier
-
+from skmultilearn.problem_transform import BinaryRelevance
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import cohen_kappa_score, make_scorer
@@ -9,18 +8,19 @@ from itertools import combinations_with_replacement
 
 
 class MLP(Classifier):
-    def __init__(self, X_train, X_test, y_train, y_test, loss, cv=True):
+    def __init__(self, X_train, X_test, y_train, y_test, loss, cv=False):
         super().__init__(X_train, X_test, y_train, y_test, loss)
 
-        mlp = MLPClassifier(hidden_layer_sizes=(100, 100),
+        mlp = MLPClassifier(hidden_layer_sizes=(10, 10),
                             activation='relu',
                             solver='adam',
-                            alpha=0.0001,
-                            batch_size=10,
+                            alpha=0.001,
+                            batch_size=1000,
                             learning_rate='adaptive',
                             learning_rate_init=0.001,
                             verbose=True,
-                            max_iter=3)
+                            max_iter=25,
+                            warm_start=True)
 
         self.classifier = OneVsRestClassifier(estimator=mlp, n_jobs=-1)
         self.cv = cv
@@ -30,6 +30,7 @@ class MLP(Classifier):
     def train(self):
         if self.cv is True:
             self._research_hyperparameter()
+            print('Done')
         else:
             self.classifier.fit(self.X_train, self.y_train)
 
@@ -51,21 +52,20 @@ class MLP(Classifier):
     def _research_hyperparameter(self):
 
         alpha = [0.0001*10**x for x in list(range(3))]
-        combination = (10, 100, 1000)
+        combination = (10, 100)
         comb1 = list(combinations_with_replacement(combination, 1))
         comb2 = list(combinations_with_replacement(combination, 2))
-        comb3 = list(combinations_with_replacement(combination, 3))
-        total_com = comb1 + comb2 + comb3
+        total_com = comb1 + comb2
 
         parameters = [{'estimator__alpha': alpha, 'estimator__hidden_layer_sizes': total_com}]
 
-        kappa_scorer = make_scorer(cohen_kappa_score)
+        # kappa_scorer = make_scorer(cohen_kappa_score)
         self.classifier = GridSearchCV(self.classifier, parameters,
                                        n_jobs=-1,
                                        verbose=2,
                                        cv=3,
                                        return_train_score=True,
-                                       scoring=kappa_scorer)
+                                       scoring='f1_macro')
 
         self.classifier.fit(self.X_train, self.y_train)
         print('Cross validation result')

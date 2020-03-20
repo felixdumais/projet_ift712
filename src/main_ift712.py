@@ -44,13 +44,13 @@ def main():
     #predict = args.predict
     #verbose = args.verbose
 
-    classifier = 'MLP'
+    classifier = 'SVM'
     validation = 0.1
     learning_rate = 0.001
     predict = True
     verbose = True
     metrics = True
-    image_path = '../data/sample/images_reduced_folder'
+    image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
 
 
@@ -79,13 +79,13 @@ def main():
         raise SyntaxError('Invalid model name')
 
     model.train()
-    svm = model.get_model()
-    svm_proba = svm.predict_proba(test_image)
-    svm_pred = svm.predict(test_image)
+    clf = model.get_model()
+    clf_proba = clf.predict_proba(test_image)
+    clf_pred = clf.predict(test_image)
     #predict_label = model.predict()
     metrics = Metrics()
 
-    fpr, tpr = metrics.roc_metrics(test_labels, svm_proba)
+    fpr, tpr = metrics.roc_metrics(test_labels, clf_proba)
     plt.figure()
     plt.plot(fpr, tpr)
     plt.title('ROC Curve')
@@ -93,7 +93,7 @@ def main():
     plt.ylabel('True Positive Rate')
     plt.show(block=False)
 
-    precision, recall = metrics.precision_recall(test_labels, svm_proba)
+    precision, recall = metrics.precision_recall(test_labels, clf_proba)
     plt.figure()
     plt.plot(precision, recall)
     plt.title('Precision-Recall Curve')
@@ -101,11 +101,11 @@ def main():
     plt.ylabel('Precision')
     plt.show(block=False)
 
-    cohen_kappa_score, kappa_class = metrics.cohen_kappa_score(test_labels, svm_pred)
-    f1_score, f1_class = metrics.f1_score(test_labels, svm_pred)
-    accuracy, accuracy_class = metrics.accuracy(test_labels, svm_pred)
-    precision, precision_class = metrics.precision(test_labels, svm_pred)
-    recall, recall_class = metrics.recall(test_labels, svm_pred)
+    cohen_kappa_score, kappa_class = metrics.cohen_kappa_score(test_labels, clf_pred)
+    f1_score, f1_class = metrics.f1_score(test_labels, clf_pred)
+    accuracy, accuracy_class = metrics.accuracy(test_labels, clf_pred)
+    precision, precision_class = metrics.precision(test_labels, clf_pred)
+    recall, recall_class = metrics.recall(test_labels, clf_pred)
 
     print('Cohen: {}'.format(cohen_kappa_score))
     print('F1: {}'.format(f1_score))
@@ -128,6 +128,7 @@ def main():
 
     # class_names = data.label_.columns.values.tolist()
     # metrics.plot_confusion_matrix(test_labels, svm_pred, class_names)
+    plt.show()
 
 
 if __name__ == '__main__':
