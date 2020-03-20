@@ -20,6 +20,23 @@ class DataHandler:
         self.all_data, self.sick_bool_data, self.only_sick_data = self._get_formated_data()
 
     def _download(self):
+        """Example function with types documented in the docstring.
+
+        `PEP 484`_ type annotations are supported. If attribute, parameter, and
+        return types are annotated according to `PEP 484`_, they do not need to be
+        included in the docstring:
+
+        Args:
+            param1 (int): The first parameter.
+            param2 (str): The second parameter.
+
+        Returns:
+            bool: The return value. True for success, False otherwise.
+
+        .. _PEP 484:
+            https://www.python.org/dev/peps/pep-0484/
+
+        """
         check_dir = '../data/sample'
         if os.path.isdir(check_dir):
             print('Files already downloaded')

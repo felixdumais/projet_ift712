@@ -7,8 +7,10 @@ from sklearn.metrics import cohen_kappa_score, make_scorer
 
 
 class SVMClassifier(Classifier):
-    def __init__(self, X_train, X_test, y_train, y_test, loss, cv=False):
-        super().__init__(X_train, X_test, y_train, y_test, loss)
+    def __init__(self, cv=False):
+        super().__init__()
+        self.cv = cv
+        self.trained = False
         svm = SVC(C=10,
                   degree=3,
                   kernel='rbf',
@@ -18,31 +20,21 @@ class SVMClassifier(Classifier):
                   probability=True,
                   max_iter=-1)
         self.classifier = OneVsRestClassifier(estimator=svm, n_jobs=-1)
-        self.cv = cv
-        self.trained = False
 
-    def train(self):
+    def train(self, X_train, y_train):
         if self.cv is True:
-            self._research_hyperparameter()
+            self._research_hyperparameter(X_train, y_train)
         else:
-            self.classifier.fit(self.X_train, self.y_train)
+            self.classifier.fit(X_train, y_train)
 
     def predict(self, image_to_predict):
         y_pred = self.classifier.predict(image_to_predict)
-
-        boolean_vector = y_pred[:, 5] == 1
-        y_pred[boolean_vector, :] = 0
-        y_pred[:, 5] = boolean_vector
-
         return y_pred
 
     def error(self):
         pass
 
-    def get_model(self):
-        return self.classifier
-
-    def _research_hyperparameter(self):
+    def _research_hyperparameter(self, X_train, y_train):
 
         C = [1.*10**x for x in list(range(3))]
         gamma = [0.000001*10**x for x in list(range(5))]
@@ -60,7 +52,7 @@ class SVMClassifier(Classifier):
                                        return_train_score=True,
                                        scoring=kappa_scorer)
 
-        self.classifier.fit(self.X_train, self.y_train)
+        self.classifier.fit(X_train, y_train)
         print('Cross validation result')
         print(self.classifier.cv_results_)
         print('Best estimator: {}'.format(self.classifier.best_estimator_))

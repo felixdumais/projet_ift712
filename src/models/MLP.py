@@ -8,8 +8,8 @@ from itertools import combinations_with_replacement
 
 
 class MLP(Classifier):
-    def __init__(self, X_train, X_test, y_train, y_test, loss, cv=False):
-        super().__init__(X_train, X_test, y_train, y_test, loss)
+    def __init__(self, cv=False):
+        super().__init__()
 
         mlp = MLPClassifier(hidden_layer_sizes=(10, 10),
                             activation='relu',
@@ -27,19 +27,15 @@ class MLP(Classifier):
         self.trained = False
 
 
-    def train(self):
+    def train(self, X_train, y_train):
         if self.cv is True:
-            self._research_hyperparameter()
+            self._research_hyperparameter(X_train, y_train)
             print('Done')
         else:
-            self.classifier.fit(self.X_train, self.y_train)
+            self.classifier.fit(X_train, y_train)
 
     def predict(self, image_to_predict):
         y_pred = self.classifier.predict(image_to_predict)
-
-        boolean_vector = y_pred[:, 5] == 1
-        y_pred[boolean_vector, :] = 0
-        y_pred[:, 5] = boolean_vector
 
         return y_pred
 
@@ -49,7 +45,7 @@ class MLP(Classifier):
     def get_model(self):
         return self.classifier
 
-    def _research_hyperparameter(self):
+    def _research_hyperparameter(self, X_train, y_train):
 
         alpha = [0.0001*10**x for x in list(range(3))]
         combination = (10, 100)
@@ -67,13 +63,10 @@ class MLP(Classifier):
                                        return_train_score=True,
                                        scoring='f1_macro')
 
-        self.classifier.fit(self.X_train, self.y_train)
+        self.classifier.fit(X_train, y_train)
         print('Cross validation result')
         print(self.classifier.cv_results_)
         print('Best estimator: {}'.format(self.classifier.best_estimator_))
         print('Best score: {}'.format(self.classifier.best_score_))
         print('Best hyperparameters: {}'.format(self.classifier.best_params_))
         print('Refit time: {}'.format(self.classifier.refit_time_))
-
-
-

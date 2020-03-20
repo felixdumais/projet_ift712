@@ -15,6 +15,12 @@ class Metrics:
         pass
 
     def accuracy(self, y_true, y_pred):
+        if y_true.ndim == 1:
+            y_true = y_true[:, np.newaxis]
+
+        if y_pred.ndim == 1:
+            y_pred = y_pred[:, np.newaxis]
+
         accuracy_class = []
         for i in range(y_true.shape[1]):
             accuracy_class.append(accuracy_score(y_true[:, i], y_pred[:, i]))
@@ -56,6 +62,12 @@ class Metrics:
         return precision, recall
 
     def cohen_kappa_score(self, y_true, y_pred):
+        if y_true.ndim == 1:
+            y_true = y_true[:, np.newaxis]
+
+        if y_pred.ndim == 1:
+            y_pred = y_pred[:, np.newaxis]
+
         kappa_class = []
         for i in range(y_true.shape[1]):
             kappa_class.append(cohen_kappa_score(y_true[:, i], y_pred[:, i]))
@@ -67,6 +79,12 @@ class Metrics:
         return mean_kappa_score, kappa_class
 
     def f1_score(self, y_true, y_pred):
+        if y_true.ndim == 1:
+            y_true = y_true[:, np.newaxis]
+
+        if y_pred.ndim == 1:
+            y_pred = y_pred[:, np.newaxis]
+
         f1_class = []
         for i in range(y_true.shape[1]):
             f1_class.append(f1_score(y_true[:, i], y_pred[:, i]))
@@ -78,6 +96,12 @@ class Metrics:
         return mean_f1, f1_class
 
     def precision(self, y_true, y_pred):
+        if y_true.ndim == 1:
+            y_true = y_true[:, np.newaxis]
+
+        if y_pred.ndim == 1:
+            y_pred = y_pred[:, np.newaxis]
+
         precision_class = []
         for i in range(y_true.shape[1]):
             precision_class.append(precision_score(y_true[:, i], y_pred[:, i]))
@@ -89,6 +113,12 @@ class Metrics:
         return mean_precision, precision_class
 
     def recall(self, y_true, y_pred):
+        if y_true.ndim == 1:
+            y_true = y_true[:, np.newaxis]
+
+        if y_pred.ndim == 1:
+            y_pred = y_pred[:, np.newaxis]
+
         recall_class = []
         for i in range(y_true.shape[1]):
             recall_class.append(recall_score(y_true[:, i], y_pred[:, i]))
