@@ -14,7 +14,7 @@ class SVMClassifier(Classifier):
         svm = SVC(C=10,
                   degree=3,
                   kernel='rbf',
-                  verbose=False,
+                  verbose=True,
                   gamma=0.01,
                   tol=0.001,
                   probability=True,
@@ -27,14 +27,18 @@ class SVMClassifier(Classifier):
         else:
             self.classifier.fit(X_train, y_train)
 
-    def predict(self, image_to_predict):
-        y_pred = self.classifier.predict(image_to_predict)
+    def predict(self, X_test):
+        y_pred = self.classifier.predict(X_test)
         return y_pred
 
     def error(self):
         pass
 
+    def predict_proba(self, X_test):
+        return self.classifier.predict_proba(X_test)
+
     def _research_hyperparameter(self, X_train, y_train):
+
 
         C = [1.*10**x for x in list(range(3))]
         gamma = [0.000001*10**x for x in list(range(5))]

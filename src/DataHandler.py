@@ -20,22 +20,15 @@ class DataHandler:
         self.all_data, self.sick_bool_data, self.only_sick_data = self._get_formated_data()
 
     def _download(self):
-        """Example function with types documented in the docstring.
+        """
+        Function that install the dataset in the data directory. It downloads the dataset with the kaggle API and unzip
+        the zip file downloaded (sample.zip.)
 
-        `PEP 484`_ type annotations are supported. If attribute, parameter, and
-        return types are annotated according to `PEP 484`_, they do not need to be
-        included in the docstring:
+        :arg
+            param1 (DataHandler): self
 
-        Args:
-            param1 (int): The first parameter.
-            param2 (str): The second parameter.
-
-        Returns:
-            bool: The return value. True for success, False otherwise.
-
-        .. _PEP 484:
-            https://www.python.org/dev/peps/pep-0484/
-
+        :return:
+            None
         """
         check_dir = '../data/sample'
         if os.path.isdir(check_dir):
@@ -60,6 +53,16 @@ class DataHandler:
         print('File extracted')
 
     def _import_png_folder(self):
+        """
+        Function that downloaded images in the images folder and places them in a list.
+
+        :arg
+            param1 (DataHandler): self
+
+        :return:
+            image_list (list): List or images. The format of images are array
+            id_list (list): List of string corresponding to the name of each image
+        """
         image_list = []
         id_list = []
         with tqdm(total=len(os.listdir(self.image_path))) as pbar:
@@ -79,6 +82,16 @@ class DataHandler:
         return image_list, id_list
 
     def _import_csv(self):
+        """
+        Function that read the csv in which the target of each image is written.
+
+        :arg
+            param1 (DataHandler): self
+
+        :return:
+            df (pandas dataframe): pandas dataframe corresponding to the targets. Each columns correspond to a pathology
+                                   each rows correspond to an image.
+        """
         try:
             df = pd.read_csv(self.label_full_path)
         except IOError as e:
@@ -233,6 +246,8 @@ class DataHandler:
                         ha='center', va='center')
 
         plt.show(block=False)
+
+        return value_hist_sick
 
     def show_samples(self):
         idx = 0

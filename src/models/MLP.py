@@ -1,6 +1,5 @@
 from src.models.Classifier import Classifier
 from sklearn.neural_network import MLPClassifier
-from skmultilearn.problem_transform import BinaryRelevance
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import cohen_kappa_score, make_scorer
