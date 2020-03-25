@@ -5,13 +5,15 @@ class Classifier:
     def __init__(self):
         pass
 
+    def get_model(self):
+        return self.classifier
 
     @abstractmethod
-    def train(self):
+    def train(self, X_train, y_train):
         pass
 
     @abstractmethod
-    def predict(self):
+    def predict(self, image_to_predict):
         pass
 
     @abstractmethod
@@ -19,18 +21,7 @@ class Classifier:
         pass
 
     @abstractmethod
-    def _research_hyperparameter(self):
+    def _research_hyperparameter(self, X_train, y_train):
         pass
 
-    def get_x_train(self):
-        return self.X_train
-
-    def get_x_test(self):
-        return self.X_test
-
-    def get_y_train(self):
-        return self.y_train
-
-    def get_y_test(self):
-        return self.y_test
 

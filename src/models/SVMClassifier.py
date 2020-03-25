@@ -1,51 +1,69 @@
 from models.Classifier import Classifier
 from sklearn.multiclass import OneVsRestClassifier
-from sklearn.svm import LinearSVC
-from sklearn.model_selection import cross_val_score
+from sklearn.svm import SVC
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import cohen_kappa_score, make_scorer
 
-from sklearn.model_selection import train_test_split
-import pandas as pd
-import numpy as np
 
 
 class SVMClassifier(Classifier):
-    def __init__(self, X_train, X_test, y_train, y_test, loss):
-        super().__init__(X_train, X_test, y_train, y_test, loss)
-        self.classifier = OneVsRestClassifier(LinearSVC(loss=self.loss, verbose=True, tol=0.001))
-        self.kfolded = False
+    def __init__(self, cv=False):
+        super().__init__()
+        self.cv = cv
+        self.trained = False
+        svm = SVC(C=10,
+                  degree=3,
+                  kernel='rbf',
+                  verbose=True,
+                  gamma=0.01,
+                  tol=0.001,
+                  probability=True,
+                  max_iter=-1)
+        self.classifier = OneVsRestClassifier(estimator=svm, n_jobs=-1)
 
-    def train(self):
-        if self.kfolded is False:
-            self._research_hyperparameter()
-        self.classifier.fit(self.X_train, self.y_train)
+    def train(self, X_train, y_train):
+        if self.cv is True:
+            self._research_hyperparameter(X_train, y_train)
+        else:
+            self.classifier.fit(X_train, y_train)
 
-    def predict(self):
-        y_pred = self.classifier.predict(self.X_test)
+    def predict(self, X_test):
+        y_pred = self.classifier.predict(X_test)
         return y_pred
 
     def error(self):
         pass
 
-    def get_model(self):
-        return self.classifier
+    def predict_proba(self, X_test):
+        return self.classifier.predict_proba(X_test)
 
-    def _research_hyperparameter(self):
-        self.kfolded = True
-        current_score = None
-        for i in range(1, 3):
-            C = 0.1 * i
-            self.classifier.set_params(estimator__C=C)
-            scores = cross_val_score(self.classifier, self.X_train, self.y_train, cv=2, verbose=1, n_jobs=4)
+    def _research_hyperparameter(self, X_train, y_train):
 
-            mean_score = scores.mean()
-            if current_score is None:
-                best_C = C
-                current_score = mean_score
-            elif mean_score > current_score:
-                best_C = C
-                current_score = mean_score
 
-        self.classifier.set_params(estimator__C=best_C)
+        C = [1.*10**x for x in list(range(3))]
+        gamma = [0.000001*10**x for x in list(range(5))]
+        degree = [x for x in list(range(3, 6))]
+        kernel = ['linear', 'rbf', 'poly']
+        parameters = [{'estimator__C': C, 'estimator__kernel': [kernel[0]]},
+                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]},
+                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__degree': degree, 'estimator__kernel': [kernel[2]]}]
+
+        kappa_scorer = make_scorer(cohen_kappa_score)
+        self.classifier = GridSearchCV(self.classifier, parameters,
+                                       n_jobs=-1,
+                                       verbose=2,
+                                       cv=3,
+                                       return_train_score=True,
+                                       scoring=kappa_scorer)
+
+        self.classifier.fit(X_train, y_train)
+        print('Cross validation result')
+        print(self.classifier.cv_results_)
+        print('Best estimator: {}'.format(self.classifier.best_estimator_))
+        print('Best score: {}'.format(self.classifier.best_score_))
+        print('Best hyperparameters: {}'.format(self.classifier.best_params_))
+        print('Refit time: {}'.format(self.classifier.refit_time_))
+
 
 
 
