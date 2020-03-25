@@ -116,7 +116,7 @@ class DataHandler:
 
     def _get_formated_data(self):
         image_list, id_list = self._import_png_folder()
-        image_list_resample = [self.resample_image(image, 64, 64) for image in image_list]
+        image_list_resample = [self.resample_image(image, 256, 256) for image in image_list]
         labels = self._import_csv()
 
         labels = labels[labels.iloc[:, 0].isin(id_list)]

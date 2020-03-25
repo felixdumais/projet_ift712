@@ -52,7 +52,7 @@ def main():
     metrics = True
     image_path = '../data/sample/images_reduced_folder'
     label_full_path = '../data/sample/sample_labels.csv'
-    classifier_type = 1
+    classifier_type = 2
     random_seed = 10
 
 
