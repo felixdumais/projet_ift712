@@ -2,12 +2,8 @@ from abc import abstractmethod
 
 
 class Classifier:
-    def __init__(self, X_train, X_test, y_train, y_test, loss):
-        self.X_train = X_train
-        self.X_test = X_test
-        self.y_train = y_train
-        self.y_test = y_test
-        self.loss = loss
+    def __init__(self):
+        pass
 
 
     @abstractmethod

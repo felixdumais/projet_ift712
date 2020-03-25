@@ -1,10 +1,11 @@
 # -*- coding:utf-8 -*-
 
 import argparse
-from src.models.SVMClassifier import SVMClassifier
-from src.DataHandler import DataHandler
+from models.SVMClassifier import SVMClassifier
+from models.LogisticRegressor import LogisticRegressor
+from DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
-from src.Metrics import Metrics
+from Metrics import Metrics
 import numpy as np
 import os
 
@@ -41,13 +42,13 @@ def main():
     #predict = args.predict
     #verbose = args.verbose
 
-    classifier = 'SVM'
+    classifier = 'LogisticRegressor'
     validation = 0.1
     learning_rate = 0.001
     predict = True
     verbose = True
     metrics = True
-    image_path = '../data/sample/images_reduced_folder'
+    image_path = '../data/sample/images_reduced'
     label_full_path = '../data/sample_labels.csv'
 
 
@@ -64,20 +65,23 @@ def main():
 
     if classifier == 'SVM':
         model = SVMClassifier(train_image, test_image, train_labels, test_labels, loss='hinge')
+    elif classifier == "LogisticRegressor":
+        model = LogisticRegressor()
+        model.train(train_image, train_labels)
     # Do this with every models
     else:
         raise SyntaxError('Invalid model name')
 
-    model.train()
-    predict_label = model.predict()
-    metrics = Metrics()
-    FPR = metrics.false_positive_rate(test_labels, predict_label)
-    FNR = metrics.false_negative_rate(test_labels, predict_label)
-    recall = metrics.recall(test_labels, predict_label)
-    precision = metrics.precision(test_labels, predict_label)
-    specificity = metrics.specificity(test_labels, predict_label)
-    accuracy = metrics.accuracy(test_labels, predict_label)
-    f_measure = metrics.f_measure(test_labels, predict_label)
+    #model.train()
+    predict_label = model.predict(test_image)
+    #metrics = Metrics()
+    #FPR = metrics.false_positive_rate(test_labels, predict_label)
+    #FNR = metrics.false_negative_rate(test_labels, predict_label)
+    #recall = metrics.recall(test_labels, predict_label)
+    #precision = metrics.precision(test_labels, predict_label)
+    #specificity = metrics.specificity(test_labels, predict_label)
+    #accuracy = metrics.accuracy(test_labels, predict_label)
+    #f_measure = metrics.f_measure(test_labels, predict_label)
 
 if __name__ == '__main__':
     main()
