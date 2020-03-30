@@ -11,12 +11,14 @@ import copy
 import matplotlib.pyplot as plt
 
 class DataHandler:
-    def __init__(self, label_full_path, image_path):
+    def __init__(self, label_full_path, image_path, resampled_width=64, resampled_height=64):
         self._download()
         self.label_ = None
         self.image_list_ = None
         self.label_full_path = label_full_path
         self.image_path = image_path
+        self.resampled_width = resampled_width
+        self.resampled_height = resampled_height
         self.all_data, self.sick_bool_data, self.only_sick_data = self._get_formated_data()
 
     def _download(self):
@@ -142,7 +144,7 @@ class DataHandler:
                                                 only represent the pathology of sick patients.
         """
         image_list, id_list = self._import_png_folder()
-        image_list_resample = [self.resample_image(image, 32, 32) for image in image_list]
+        image_list_resample = [self.resample_image(image, self.resampled_width, self.resampled_height) for image in image_list]
         labels = self._import_csv()
 
         labels = labels[labels.iloc[:, 0].isin(id_list)]

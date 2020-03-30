@@ -129,7 +129,7 @@ def main():
 
     if verbose:
         print('Formatting dataset...')
-    data = DataHandler(image_path=image_path, label_full_path=label_full_path)
+    data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=32, resampled_height=32)
     image_all, labels_all = data.get_all_data()
     _, labels_bool = data.get_sick_bool_data()
     data.plot_data()
