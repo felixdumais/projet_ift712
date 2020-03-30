@@ -120,7 +120,7 @@ def main():
     #predict = args.predict
     #verbose = args.verbose
 
-    classifier = 'all'
+    classifier = 'SVM'
     verbose = True
     image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
