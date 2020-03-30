@@ -38,11 +38,16 @@ class MLP(Classifier):
 
         return y_pred
 
+    def predict_proba(self, X_test):
+        return self.classifier.predict_proba(X_test)
+
     def error(self):
         pass
 
     def get_model(self):
         return self.classifier
+
+
 
     def _research_hyperparameter(self, X_train, y_train):
 

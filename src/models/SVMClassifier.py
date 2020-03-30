@@ -3,6 +3,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import cohen_kappa_score, make_scorer
+import pickle
 
 
 
@@ -36,6 +37,14 @@ class SVMClassifier(Classifier):
 
     def predict_proba(self, X_test):
         return self.classifier.predict_proba(X_test)
+
+    def save_model(self):
+        filename = '../trained_models/SVM_model.mdl'
+        pickle.dump(self.classifier, open(filename, 'wb'))
+
+    def load_model(self):
+        filename = '../trained_models/SVM_model.mdl'
+        self.classifier = pickle.load(open(filename, 'rb'))
 
     def _research_hyperparameter(self, X_train, y_train):
 

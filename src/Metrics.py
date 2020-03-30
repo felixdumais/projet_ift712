@@ -25,6 +25,8 @@ class Metrics:
         for i in range(y_true.shape[1]):
             accuracy_class.append(accuracy_score(y_true[:, i], y_pred[:, i]))
 
+        y_true = y_true.flatten(order='C')
+        y_pred = y_pred.flatten(order='C')
         mean_accuracy = accuracy_score(y_true, y_pred)
 
         return mean_accuracy, accuracy_class
@@ -71,6 +73,7 @@ class Metrics:
         kappa_class = []
         for i in range(y_true.shape[1]):
             kappa_class.append(cohen_kappa_score(y_true[:, i], y_pred[:, i]))
+
         y_true = y_true.flatten(order='C')
         y_pred = y_pred.flatten(order='C')
 
@@ -88,6 +91,7 @@ class Metrics:
         f1_class = []
         for i in range(y_true.shape[1]):
             f1_class.append(f1_score(y_true[:, i], y_pred[:, i]))
+
         y_true = y_true.flatten(order='C')
         y_pred = y_pred.flatten(order='C')
 
@@ -105,6 +109,7 @@ class Metrics:
         precision_class = []
         for i in range(y_true.shape[1]):
             precision_class.append(precision_score(y_true[:, i], y_pred[:, i]))
+
         y_true = y_true.flatten(order='C')
         y_pred = y_pred.flatten(order='C')
 
