@@ -3,7 +3,6 @@
 import argparse
 from src.models.SVMClassifier import SVMClassifier
 from src.models.MLP import MLP
-
 from src.DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
 from src.Metrics import Metrics
