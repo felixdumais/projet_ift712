@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import roc_curve
 from sklearn.metrics import confusion_matrix
-from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.metrics import precision_recall_curve
 from sklearn.metrics import cohen_kappa_score
 from sklearn.metrics import accuracy_score

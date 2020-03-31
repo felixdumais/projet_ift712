@@ -1,0 +1,23 @@
+Penalty : l2 est celui qu'on a vu dans le cours.
+
+dual : Fonctionne juste pour pen=l2 et solver=liblinear.
+       améliore un peu les résultats quand je le met
+
+tol : si la tolérance est trop basse, on rencontre des problèmes de convergence
+      défaut : 0.0001, fonctionne à 0.005 avec max_iter à 200.
+
+max_iter : 1000 est considéré pas mal, 100 par défaut, ça aide à converger
+
+C : paramètre modifié dans grid search. inverse du power de régularisation
+
+fit_intercept : pas d'effet en l2:liblinear
+
+intercept_scaling : juste avec liblinear et fit_intercept:true
+                    pas l'air d'avoir d'effet
+
+class_weight : du meilleur au pire : None, balanced
+               pas essayer dict (faudrait donner le poids à chaque classe)
+
+solver : liblinear est recommendé pour les smalls datasets (je fais mes tests avec 49 images)
+         sag, saga, lbfgs et newton-cg lancent une erreur "'NoneType' object has no attribute 'write'"
+         l'erreur est résolue quand on enlève le multi threading forcé (n_jobs=-1)

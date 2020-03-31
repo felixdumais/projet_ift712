@@ -6,12 +6,7 @@ from models.LogisticRegressor import LogisticRegressor
 from DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
 from Metrics import Metrics
-from src.models.SVMClassifier import SVMClassifier
-from src.models.MLP import MLP
-
-from src.DataHandler import DataHandler
-from sklearn.model_selection import train_test_split
-from src.Metrics import Metrics
+from models.MLP import MLP
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -57,9 +52,9 @@ def main():
     verbose = True
     metrics = True
 
-    image_path = '../data/sample/images_reduced_folder'
+    image_path = '../data/sample/images_reduced'
     label_full_path = '../data/sample/sample_labels.csv'
-    classifier_type = 2
+    classifier_type = 1
     random_seed = 10
 
 
@@ -70,8 +65,8 @@ def main():
     image_all, labels_all = data.get_all_data()
     _, labels_bool = data.get_sick_bool_data()
     image_sick, labels_sick = data.get_only_sick_data()
-    data.plot_data()
-    data.show_samples()
+    #data.plot_data()
+    #data.show_samples()
 
     if verbose:
         print('Training of the model...')
@@ -99,7 +94,11 @@ def main():
             model2 = SVMClassifier()
     elif classifier == "LogisticRegressor":
         model = LogisticRegressor()
-        model.train(train_image, train_labels)
+        if classifier_type == 1:
+            model = LogisticRegressor()
+        elif classifier_type == 2:
+            model1 = LogisticRegressor()
+            model2 = LogisticRegressor()
 
     elif classifier == 'MLP':
         if classifier_type == 1:
@@ -110,17 +109,8 @@ def main():
     # Do this with every models
     else:
         raise SyntaxError('Invalid model name')
-
-    #model.train()
-    predict_label = model.predict(test_image)
-    #metrics = Metrics()
-    #FPR = metrics.false_positive_rate(test_labels, predict_label)
-    #FNR = metrics.false_negative_rate(test_labels, predict_label)
-    #recall = metrics.recall(test_labels, predict_label)
-    #precision = metrics.precision(test_labels, predict_label)
-    #specificity = metrics.specificity(test_labels, predict_label)
-    #accuracy = metrics.accuracy(test_labels, predict_label)
-    #f_measure = metrics.f_measure(test_labels, predict_label)
+        
+    
     if classifier_type == 1:
         model.train(train_image_all, train_labels_all)
         pred = model.predict(test_image_all)
@@ -128,21 +118,21 @@ def main():
 
         metrics = Metrics()
 
-        fpr, tpr = metrics.roc_metrics(test_labels_all, proba)
-        plt.figure()
-        plt.plot(fpr, tpr)
-        plt.title('ROC Curve')
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.show(block=False)
+#        fpr, tpr = metrics.roc_metrics(test_labels_all, proba)
+#        plt.figure()
+#        plt.plot(fpr, tpr)
+#        plt.title('ROC Curve')
+#        plt.xlabel('False Positive Rate')
+#        plt.ylabel('True Positive Rate')
+#        plt.show(block=False)
 
-        precision, recall = metrics.precision_recall(test_labels_all, proba)
-        plt.figure()
-        plt.plot(precision, recall)
-        plt.title('Precision-Recall Curve')
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
-        plt.show(block=False)
+#        precision, recall = metrics.precision_recall(test_labels_all, proba)
+#        plt.figure()
+#        plt.plot(precision, recall)
+#        plt.title('Precision-Recall Curve')
+#        plt.xlabel('Recall')
+#        plt.ylabel('Precision')
+#        plt.show(block=False)
 
         cohen_kappa_score, kappa_class = metrics.cohen_kappa_score(test_labels_all, pred)
         f1_score, f1_class = metrics.f1_score(test_labels_all, pred)
@@ -156,23 +146,23 @@ def main():
         print('Precision: {}'.format(precision))
         print('Recall: {}'.format(recall))
 
-        titles = ['names', 'Cohen', 'F1_score', 'Accuracy', 'Precision', 'Recall']
-        kappa_class_disp = ['%.4f' % elem for elem in kappa_class]
-        f1_class_disp = ['%.4f' % elem for elem in f1_class]
-        accuracy_class_disp = ['%.4f' % elem for elem in accuracy_class]
-        precision_class_disp = ['%.4f' % elem for elem in precision_class]
-        recall_class_disp = ['%.4f' % elem for elem in recall_class]
-
-        label_list = data.label_.columns.values.tolist()
-
-        element = [titles] + list(
-            zip(label_list, kappa_class_disp, f1_class_disp, accuracy_class_disp, precision_class_disp,
-                recall_class_disp))
-        for i, d in enumerate(element):
-            line = '        |'.join(str(x).ljust(12) for x in d)
-            print(line)
-            if i == 0:
-                print('-' * len(line))
+#        titles = ['names', 'Cohen', 'F1_score', 'Accuracy', 'Precision', 'Recall']
+#        kappa_class_disp = ['%.4f' % elem for elem in kappa_class]
+#        f1_class_disp = ['%.4f' % elem for elem in f1_class]
+#        accuracy_class_disp = ['%.4f' % elem for elem in accuracy_class]
+#        precision_class_disp = ['%.4f' % elem for elem in precision_class]
+#        recall_class_disp = ['%.4f' % elem for elem in recall_class]
+#
+#        label_list = data.label_.columns.values.tolist()
+#
+#        element = [titles] + list(
+#            zip(label_list, kappa_class_disp, f1_class_disp, accuracy_class_disp, precision_class_disp,
+#                recall_class_disp))
+#        for i, d in enumerate(element):
+#            line = '        |'.join(str(x).ljust(12) for x in d)
+#            print(line)
+#            if i == 0:
+#                print('-' * len(line))
 
     elif classifier_type == 2:
         model1.train(train_image_all, train_labels_bool)

@@ -116,7 +116,7 @@ class DataHandler:
 
     def _get_formated_data(self):
         image_list, id_list = self._import_png_folder()
-        image_list_resample = [self.resample_image(image, 256, 256) for image in image_list]
+        image_list_resample = [self.resample_image(image, 128, 128) for image in image_list]
         labels = self._import_csv()
 
         labels = labels[labels.iloc[:, 0].isin(id_list)]
@@ -256,7 +256,7 @@ class DataHandler:
         plt.subplots_adjust(wspace=0, hspace=0)
         plt.suptitle('Samples of dataset')
         for image in self.image_list_[:16]:
-            im = self.resample_image(image, 256, 256)
+            im = self.resample_image(image, 128, 128)
             plt.subplot(4, 4, idx + 1)  # .set_title(l)
             plt.imshow(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))
             plt.axis('off')

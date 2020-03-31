@@ -13,19 +13,19 @@ class LogisticRegressor(Classifier):
         self.trained = False
         logit = LogisticRegression(penalty='l2',
                                    dual=False,
-                                   tol=0.0001,
+                                   tol=0.005,
                                    C=1.0,
-                                   fit_intercept=True,
+                                   fit_intercept=False,
                                    intercept_scaling=1,
-                                   class_weight="balanced",
-                                   solver='liblinear',
-                                   max_iter=100,
+                                   class_weight=None,
+                                   solver='lbfgs',
+                                   max_iter=200,
                                    multi_class='ovr',
-                                   verbose=True,
-                                   warm_start=False,
-                                   n_jobs=None)
+                                   verbose=False,
+                                   warm_start=False)
+                                   #n_jobs=None)
                                  #  l1_ratios=None)
-        self.classifier = OneVsRestClassifier(estimator=logit, n_jobs=-1)
+        self.classifier = OneVsRestClassifier(estimator=logit)
         #self.classifier = logit
 
     def train(self, X_train, y_train):
