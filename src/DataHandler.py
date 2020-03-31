@@ -11,12 +11,14 @@ import copy
 import matplotlib.pyplot as plt
 
 class DataHandler:
-    def __init__(self, label_full_path, image_path):
+    def __init__(self, label_full_path, image_path, resampled_width=64, resampled_height=64):
         self._download()
         self.label_ = None
         self.image_list_ = None
         self.label_full_path = label_full_path
         self.image_path = image_path
+        self.resampled_width = resampled_width
+        self.resampled_height = resampled_height
         self.all_data, self.sick_bool_data, self.only_sick_data = self._get_formated_data()
 
     def _download(self):
@@ -25,9 +27,9 @@ class DataHandler:
         the zip file downloaded (sample.zip.)
 
         :arg
-            param1 (DataHandler): self
+            self (DataHandler): instance of the class
 
-        :return:
+        :return
             None
         """
         check_dir = '../data/sample'
@@ -57,9 +59,9 @@ class DataHandler:
         Function that downloaded images in the images folder and places them in a list.
 
         :arg
-            param1 (DataHandler): self
+            self (DataHandler): instance of the class
 
-        :return:
+        :return
             image_list (list): List or images. The format of images are array
             id_list (list): List of string corresponding to the name of each image
         """
@@ -86,9 +88,9 @@ class DataHandler:
         Function that read the csv in which the target of each image is written.
 
         :arg
-            param1 (DataHandler): self
+            self (DataHandler): instance of the class
 
-        :return:
+        :return
             df (pandas dataframe): pandas dataframe corresponding to the targets. Each columns correspond to a pathology
                                    each rows correspond to an image.
         """
@@ -115,8 +117,34 @@ class DataHandler:
         return df
 
     def _get_formated_data(self):
+        """
+        Function that format the data in numpy array
+
+        :arg
+            self (DataHandler): instance of the class
+
+        :return
+            (image_flatten_array, all_labels) (tuple of numpy array):
+                image_flatten_array (numpy array): 2D numpy array, each column is a normalized pixel value (0, 1) and
+                                                   row correspond to a new image
+                all_labels (numpy array): 2D binary numpy array, each column correspond to a pathology including the
+                                          No Finding as a pathology and each row correspond to a new image
+            (image_flatten_array, bool_sick_labels) (tuple of numpy array):
+                image_flatten_array (numpy array): 2D numpy array, each column is a normalized pixel value (0, 1) and
+                                                   row correspond to a new image
+                bool_sick_labels (numpy array): 1D binary numpy array, each value correspond to either 0 or 1. If the
+                                                value is 1, it means that the image corresponding to the index is the
+                                                image of a sick patient. 0 means a healthy patient
+            (only_sick_image, only_sick_labels) (tuple of numpy array):
+                only_sick_image (numpy array): 2D numpy array, each column is a normalized pixel value (0, 1) and
+                                               row correspond to a new image. Only the sick patient are represented
+                                               in this variable
+                only_sick_labels (numpy array): 2D binary numpy array, each column correspond to a pathology. No Finding
+                                                is not included as a pathology. Each row correspond to a new image. It
+                                                only represent the pathology of sick patients.
+        """
         image_list, id_list = self._import_png_folder()
-        image_list_resample = [self.resample_image(image, 128, 128) for image in image_list]
+        image_list_resample = [self.resample_image(image, self.resampled_width, self.resampled_height) for image in image_list]
         labels = self._import_csv()
 
         labels = labels[labels.iloc[:, 0].isin(id_list)]
@@ -148,23 +176,104 @@ class DataHandler:
                (only_sick_image, only_sick_labels)
 
     def get_all_data(self):
+        """
+        Function that return the instance variable self.all_data
+
+        :arg
+            self (DataHandler): instance of the class
+
+        :return
+            self.all_data (tuple of numpy array):
+                self.all_data[0] (numpy array): 2D numpy array, each column is a normalized pixel value (0, 1) and
+                                                   row correspond to a new image
+                self.all_data[1] (numpy array): 2D binary numpy array, each column correspond to a pathology including
+                                                the No Finding as a pathology and each row correspond to a new image
+
+        """
         return self.all_data
 
     def get_sick_bool_data(self):
+        """
+        Function that return the instance variable self.sick_bool_data
+
+        :arg
+            self (DataHandler): instance of the class
+
+        :return
+            self.sick_bool_data (tuple of numpy array):
+                self.sick_bool_data[0] (numpy array): 2D numpy array, each column is a normalized pixel value (0, 1) and
+                                                   row correspond to a new image
+                self.sick_bool_data[1] (numpy array): 1D binary numpy array, each value correspond to either 0 or 1. If
+                                                the value is 1, it means that the image corresponding to the index is
+                                                the image of a sick patient. 0 means a healthy patient
+
+        """
         return self.sick_bool_data
 
     def get_only_sick_data(self):
+        """
+        Function that return the instance variable self.only_sick_data
+
+        :arg
+            self (DataHandler): instance of the class
+
+        :return
+            self.sick_bool_data (tuple of numpy array):
+                self.sick_bool_data[0] (numpy array): 2D numpy array, each column is a normalized pixel value (0, 1) and
+                                               row correspond to a new image. Only the sick patient are represented
+                                               in this variable
+                self.sick_bool_data[1] (numpy array): 2D binary numpy array, each column correspond to a pathology. No
+                                                      Finding is not included as a pathology. Each row correspond to a
+                                                      new image. It only represent the pathology of sick patients.
+
+        """
         return self.only_sick_data
 
     def flatten(self, image: list):
+        """
+        Function that flatten a list of 2D numpy array
+
+        :arg
+            self (DataHandler): instance of the class
+            image (list): list of 2D numpy array to be flatten
+
+        :return
+            image (list): list of 1D numpy array
+
+        """
         image = [x.flatten(order='C') for x in image]
         return image
 
     def resample_image(self, image, width: int, heigth: int):
+        """
+        Function that resample a 2D numpy array
+
+        :arg
+            self (DataHandler): instance of the class
+            image (numpy array): 2D numpy array
+            width (int): width that the image will be resample
+            heigth (int): heigth that the image will be resample
+
+        :return
+            resampled (numpy array): resampled 2D numpy array
+
+        """
         resampled = cv2.resize(image, dsize=(width, heigth), interpolation=cv2.INTER_NEAREST)
         return resampled
 
     def plot_data(self):
+        """
+        Function that plot the bar plot of the pathology amongst patients including No Finding,
+                           the bar plot excluding No Finding,
+                           the bar plot os sick vs not sick
+
+        :arg
+            self (DataHandler): instance of the class
+
+        :return
+            value_hist_sick (list): list of the distrbution of sick people
+
+        """
         array_labels = np.asarray(self.label_)
 
         value_hist = np.sum(array_labels, axis=0).tolist()
@@ -250,6 +359,16 @@ class DataHandler:
         return value_hist_sick
 
     def show_samples(self):
+        """
+        Function that plot some sample of the image in the dataset
+
+        :arg
+            self (DataHandler): instance of the class
+
+        :return
+            None
+
+        """
         idx = 0
         plt.figure()
         plt.rcParams['figure.figsize'] = (10.0, 10.0)

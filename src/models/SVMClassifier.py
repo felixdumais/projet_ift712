@@ -3,6 +3,7 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import cohen_kappa_score, make_scorer
+import pickle
 
 
 
@@ -22,12 +23,37 @@ class SVMClassifier(Classifier):
         self.classifier = OneVsRestClassifier(estimator=svm, n_jobs=-1)
 
     def train(self, X_train, y_train):
+        """
+        Function that train the classifier
+
+        :arg
+            self (SVMClassifier): instance of the class
+            X_train (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                   normalized pixel value
+            y_train (numpy array): 1D or 2D numpy array corresponding to the targets
+
+        :return
+            None
+
+        """
         if self.cv is True:
             self._research_hyperparameter(X_train, y_train)
         else:
             self.classifier.fit(X_train, y_train)
 
     def predict(self, X_test):
+        """
+        Function that do a prediction on a set of data
+
+        :arg
+            self (SVMClassifier): instance of the class
+            X_test (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                  normalized pixel value
+
+        :return
+            y_pred (numpy array): 1D or 2D numpy array corresponding to the targets
+
+        """
         y_pred = self.classifier.predict(X_test)
         return y_pred
 
@@ -35,10 +61,62 @@ class SVMClassifier(Classifier):
         pass
 
     def predict_proba(self, X_test):
+        """
+        Function that do a prediction on a set of data
+
+        :arg
+            self (SVMClassifier): instance of the class
+            X_test (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                  normalized pixel value
+
+        :return
+            self.classifier.predict_proba(X_test) (numpy array): probability
+
+        """
         return self.classifier.predict_proba(X_test)
 
-    def _research_hyperparameter(self, X_train, y_train):
+    def save_model(self):
+        """
+        Function that saves the classifier
 
+        :arg
+            self (SVMClassifier): instance of the class
+
+        :return
+            None
+
+        """
+        filename = '../trained_models/SVM_model.mdl'
+        pickle.dump(self.classifier, open(filename, 'wb'))
+
+    def load_model(self):
+        """
+        Function that loads the classifier
+
+        :arg
+            self (SVMClassifier): instance of the class
+
+        :return
+            None
+
+        """
+        filename = '../trained_models/SVM_model.mdl'
+        self.classifier = pickle.load(open(filename, 'rb'))
+
+    def _research_hyperparameter(self, X_train, y_train):
+        """
+        Function that optimize some desired hyperparameters with cross-validation
+
+        :arg
+            self (SVMClassifier): instance of the class
+            X_train (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                   normalized pixel value
+            y_train (numpy array): 1D or 2D numpy array corresponding to the targets
+
+        :return
+            None
+
+        """
 
         C = [1.*10**x for x in list(range(3))]
         gamma = [0.000001*10**x for x in list(range(5))]

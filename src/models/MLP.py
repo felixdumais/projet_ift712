@@ -25,8 +25,20 @@ class MLP(Classifier):
         self.cv = cv
         self.trained = False
 
-
     def train(self, X_train, y_train):
+        """
+        Function that train the classifier
+
+        :arg
+            self (MLP): instance of the class
+            X_train (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                   normalized pixel value
+            y_train (numpy array): 1D or 2D numpy array corresponding to the targets
+
+        :return
+            None
+
+        """
         if self.cv is True:
             self._research_hyperparameter(X_train, y_train)
             print('Done')
@@ -34,17 +46,55 @@ class MLP(Classifier):
             self.classifier.fit(X_train, y_train)
 
     def predict(self, image_to_predict):
+        """
+        Function that do a prediction on a set of data
+
+        :arg
+            self (MLP): instance of the class
+            X_test (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                  normalized pixel value
+
+        :return
+            y_pred (numpy array): 1D or 2D numpy array corresponding to the targets
+
+        """
+
         y_pred = self.classifier.predict(image_to_predict)
 
         return y_pred
 
+    def predict_proba(self, X_test):
+        """
+        Function that do a prediction on a set of data
+
+        :arg
+            self (MLP): instance of the class
+            X_test (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                  normalized pixel value
+
+        :return
+            self.classifier.predict_proba(X_test) (numpy array): probability
+
+        """
+        return self.classifier.predict_proba(X_test)
+
     def error(self):
         pass
 
-    def get_model(self):
-        return self.classifier
-
     def _research_hyperparameter(self, X_train, y_train):
+        """
+        Function that optimize some desired hyperparameter with cross-validation
+
+        :arg
+            self (MLP): instance of the class
+            X_train (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                   normalized pixel value
+            y_train (numpy array): 1D or 2D numpy array corresponding to the targets
+
+        :return
+            None
+
+        """
 
         alpha = [0.0001*10**x for x in list(range(3))]
         combination = (10, 100)
