@@ -1,31 +1,35 @@
 from models.Classifier import Classifier
 from sklearn.multiclass import OneVsRestClassifier
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import cohen_kappa_score, make_scorer
 
 
 
-class LogisticRegressor(Classifier):
+class RandomForest(Classifier):
     def __init__(self, cv=False):
         super().__init__()
         self.cv = cv
         self.trained = False
-        logit = LogisticRegression(penalty='l2',
-                                   dual=False,
-                                   tol=0.005,
-                                   C=1.0,
-                                   fit_intercept=False,
-                                   intercept_scaling=1,
-                                   class_weight=None,
-                                   solver='lbfgs',
-                                   max_iter=200,
-                                   multi_class='ovr',
+        forest = RandomForestClassifier(n_estimators=100,
+                                   criterion='gini',
+                                   max_depth=None,
+                                   min_samples_split=2,
+                                   min_samples_leaf=1,
+                                   min_weight_fraction_leaf=0,
+                                   max_features='sqrt',
+                                   max_leaf_nodes=None,
+                                   min_impurity_decrease=0,
+                                   bootstrap=True,
+                                   oob_score=False,
+                                   n_jobs=-1,
+                                   random_state=None,
                                    verbose=False,
-                                   warm_start=False)
-                                   #n_jobs=None)
-                                 #  l1_ratios=None)
-        self.classifier = OneVsRestClassifier(estimator=logit)
+                                   warm_start=False,
+                                   class_weight=None)
+                                   #ccp_alpha=0.0,
+                                   #max_samples=None)
+        self.classifier = OneVsRestClassifier(estimator=forest)
 
     def train(self, X_train, y_train):
         if self.cv is True:

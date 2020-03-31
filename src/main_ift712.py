@@ -3,6 +3,7 @@
 import argparse
 from models.SVMClassifier import SVMClassifier
 from models.LogisticRegressor import LogisticRegressor
+from models.RandomForest import RandomForest
 from DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
 from Metrics import Metrics
@@ -80,21 +81,21 @@ def display_metrics(classifier_list: list, test_labels_all, pred: list, proba: l
     print('Precision: {}'.format(precision))
     print('Recall: {}'.format(recall))
 
-    titles = ['names', 'Cohen', 'F1_score', 'Accuracy', 'Precision', 'Recall']
-    kappa_class_disp = ['%.4f' % elem for elem in kappa_class]
-    f1_class_disp = ['%.4f' % elem for elem in f1_class]
-    accuracy_class_disp = ['%.4f' % elem for elem in accuracy_class]
-    precision_class_disp = ['%.4f' % elem for elem in precision_class]
-    recall_class_disp = ['%.4f' % elem for elem in recall_class]
-
-    element = [titles] + list(
-        zip(label_list, kappa_class_disp, f1_class_disp, accuracy_class_disp, precision_class_disp,
-            recall_class_disp))
-    for i, d in enumerate(element):
-        line = '        |'.join(str(x).ljust(12) for x in d)
-        print(line)
-        if i == 0:
-            print('-' * len(line))
+#    titles = ['names', 'Cohen', 'F1_score', 'Accuracy', 'Precision', 'Recall']
+#    kappa_class_disp = ['%.4f' % elem for elem in kappa_class]
+#    f1_class_disp = ['%.4f' % elem for elem in f1_class]
+#    accuracy_class_disp = ['%.4f' % elem for elem in accuracy_class]
+#    precision_class_disp = ['%.4f' % elem for elem in precision_class]
+#    recall_class_disp = ['%.4f' % elem for elem in recall_class]
+#
+#    element = [titles] + list(
+#        zip(label_list, kappa_class_disp, f1_class_disp, accuracy_class_disp, precision_class_disp,
+#            recall_class_disp))
+#    for i, d in enumerate(element):
+#        line = '        |'.join(str(x).ljust(12) for x in d)
+#        print(line)
+#        if i == 0:
+#            print('-' * len(line))
 
 def argument_parser():
     parser = argparse.ArgumentParser(usage='\n python3 main_ift712.py [model]',
@@ -113,20 +114,9 @@ def argument_parser():
     return parser.parse_args()
 
 def main():
-    #args = argument_parser()
 
-    #classifier = args.model
-    #validation = args.validation
-    #learning_rate = args.lr
-    #predict = args.predict
-    #verbose = args.verbose
-
-    classifier = 'LogisticRegressor'
-    validation = 0.1
-    learning_rate = 0.001
-    predict = True
+    classifier = 'RandomForest'
     verbose = True
-    metrics = True
     image_path = '../data/sample/images_reduced'
     label_full_path = '../data/sample/sample_labels.csv'
     classifier_type = 1
@@ -166,7 +156,8 @@ def main():
             model1 = SVMClassifier()
             model2 = SVMClassifier()
    
-    elif classifier == "LogisticRegressor":
+    elif classifier == 'LogisticRegressor':
+        classifier_list = ['LogisticRegressor']
         model = LogisticRegressor()
         if classifier_type == 1:
             model = LogisticRegressor()
@@ -182,8 +173,17 @@ def main():
             model1 = MLP(cv=False)
             model2 = MLP(cv=False)
     
+    elif classifier == 'RandomForest':
+        classifier_list = ['RandomForest']
+        model = RandomForest()
+        if classifier_type == 1:
+            model = RandomForest()
+        elif classifier_type == 2:
+            model1 = RandomForest()
+            model2 = RandomForest()
+    
     elif classifier == 'all':
-        classifier_list = ['SVM', 'MLP']
+        classifier_list = ['SVM', 'MLP', 'LogisticRegressor']
         if classifier_type == 1:
             model_SVM = SVMClassifier(cv=False)
             model_MLP = MLP(cv=False)
@@ -203,54 +203,7 @@ def main():
         pred = model.predict(test_image_all)
         proba = model.predict_proba(test_image_all)
 
-        metrics = Metrics()
 
-#        fpr, tpr = metrics.roc_metrics(test_labels_all, proba)
-#        plt.figure()
-#        plt.plot(fpr, tpr)
-#        plt.title('ROC Curve')
-#        plt.xlabel('False Positive Rate')
-#        plt.ylabel('True Positive Rate')
-#        plt.show(block=False)
-
-#        precision, recall = metrics.precision_recall(test_labels_all, proba)
-#        plt.figure()
-#        plt.plot(precision, recall)
-#        plt.title('Precision-Recall Curve')
-#        plt.xlabel('Recall')
-#        plt.ylabel('Precision')
-#        plt.show(block=False)
-
-        cohen_kappa_score, kappa_class = metrics.cohen_kappa_score(test_labels_all, pred)
-        f1_score, f1_class = metrics.f1_score(test_labels_all, pred)
-        accuracy, accuracy_class = metrics.accuracy(test_labels_all, pred)
-        precision, precision_class = metrics.precision(test_labels_all, pred)
-        recall, recall_class = metrics.recall(test_labels_all, pred)
-        #
-        print('Cohen: {}'.format(cohen_kappa_score))
-        print('F1: {}'.format(f1_score))
-        print('Accuracy: {}'.format(accuracy))
-        print('Precision: {}'.format(precision))
-        print('Recall: {}'.format(recall))
-
-#        titles = ['names', 'Cohen', 'F1_score', 'Accuracy', 'Precision', 'Recall']
-#        kappa_class_disp = ['%.4f' % elem for elem in kappa_class]
-#        f1_class_disp = ['%.4f' % elem for elem in f1_class]
-#        accuracy_class_disp = ['%.4f' % elem for elem in accuracy_class]
-#        precision_class_disp = ['%.4f' % elem for elem in precision_class]
-#        recall_class_disp = ['%.4f' % elem for elem in recall_class]
-#
-#        label_list = data.label_.columns.values.tolist()
-#
-#        element = [titles] + list(
-#            zip(label_list, kappa_class_disp, f1_class_disp, accuracy_class_disp, precision_class_disp,
-#                recall_class_disp))
-#        for i, d in enumerate(element):
-#            line = '        |'.join(str(x).ljust(12) for x in d)
-#            print(line)
-#            if i == 0:
-#                print('-' * len(line))
-        
         if isinstance(model, list):
             pred = []
             proba = []

@@ -1,0 +1,10 @@
+max_features : Pour classification -> max_features="sqrt" est le meilleur par défaut
+	       selon les résultats empiriques
+
+
+
+
+Selon https://scikit-learn.org/stable/modules/ensemble.html#forest
+max_features="sqrt"
+max_depth=None
+min_samples_split=2
