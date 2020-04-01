@@ -27,8 +27,6 @@ class RandomForest(Classifier):
                                    verbose=False,
                                    warm_start=False,
                                    class_weight=None)
-                                   #ccp_alpha=0.0,
-                                   #max_samples=None)
         self.classifier = OneVsRestClassifier(estimator=forest)
 
     def train(self, X_train, y_train):
@@ -50,13 +48,18 @@ class RandomForest(Classifier):
     def _research_hyperparameter(self, X_train, y_train):
 
 
-#        C = [1.*10**x for x in list(range(3))]
-#        gamma = [0.000001*10**x for x in list(range(5))]
-#        degree = [x for x in list(range(3, 6))]
-#        kernel = ['linear', 'rbf', 'poly']
-#        parameters = [{'estimator__C': C, 'estimator__kernel': [kernel[0]]},
-#                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]},
-#                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__degree': degree, 'estimator__kernel': [kernel[2]]}]
+        n_estimators = [50+50*x for x in list(range(3))]
+        criterion = ['gini', 'entropy']
+        max_depth = [1.*10**x for x in list(range(3))]+[None]
+        max_features = ['sqrt', 'log2', None]
+        bootstrap = [True]
+        oob_score = [True]
+        class_weight = ['balanced', 'balanced_subsample', None]
+        parameters = [{'estimator__n_estimators': n_estimators, 'estimator__criterion': criterion, 'estimator__max_depth':max_depth,
+                        'estimator__max_features':max_features, 'estimator__class_weight':class_weight},
+                       {'estimator__n_estimators': n_estimators, 'estimator__criterion': criterion, 'estimator__max_depth':max_depth,
+                        'estimator__max_features':max_features, 'estimator__bootstrap':bootstrap, 'estimator__oob_score':oob_score,
+                        'estimator__class_weight':class_weight}]
 
         
         self.classifier = GridSearchCV(self.classifier, parameters,

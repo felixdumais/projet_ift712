@@ -117,7 +117,7 @@ def main():
 
     classifier = 'RandomForest'
     verbose = True
-    image_path = '../data/sample/images_reduced'
+    image_path = '../data/sample/images_min'
     label_full_path = '../data/sample/sample_labels.csv'
     classifier_type = 1
     random_seed = 10
@@ -129,8 +129,8 @@ def main():
     image_all, labels_all = data.get_all_data()
     _, labels_bool = data.get_sick_bool_data()
     image_sick, labels_sick = data.get_only_sick_data()
-    #data.plot_data()
-    #data.show_samples()
+#    data.plot_data()
+#    data.show_samples()
 
 
     if verbose:
@@ -160,7 +160,7 @@ def main():
         classifier_list = ['LogisticRegressor']
         model = LogisticRegressor()
         if classifier_type == 1:
-            model = LogisticRegressor()
+            model = LogisticRegressor(cv=True)
         elif classifier_type == 2:
             model1 = LogisticRegressor()
             model2 = LogisticRegressor()
@@ -177,21 +177,25 @@ def main():
         classifier_list = ['RandomForest']
         model = RandomForest()
         if classifier_type == 1:
-            model = RandomForest()
+            model = RandomForest(cv=True)
         elif classifier_type == 2:
             model1 = RandomForest()
             model2 = RandomForest()
     
     elif classifier == 'all':
-        classifier_list = ['SVM', 'MLP', 'LogisticRegressor']
+        classifier_list = ['SVM', 'MLP', 'LogisticRegressor', 'RandomForest']
         if classifier_type == 1:
             model_SVM = SVMClassifier(cv=False)
             model_MLP = MLP(cv=False)
-            model = [model_SVM, model_MLP]
+            model_Logit = LogisticRegressor(cv=False)
+            model_Forest = RandomForest(cv=False)
+            model = [model_SVM, model_MLP, model_Logit, model_Forest]
         elif classifier_type == 2:
             model_SVM = SVMClassifier(cv=False)
             model_MLP = MLP(cv=False)
-            model1 = [model_SVM, model_MLP]
+            model_Logit = LogisticRegressor(cv=False)
+            model_Forest = RandomForest(cv=False)
+            model1 = [model_SVM, model_MLP, model_Logit, model_Forest]
             model2 = copy.deepcopy(model1)
     # Do this with every models
     else:
@@ -199,11 +203,6 @@ def main():
         
     
     if classifier_type == 1:
-        model.train(train_image_all, train_labels_all)
-        pred = model.predict(test_image_all)
-        proba = model.predict_proba(test_image_all)
-
-
         if isinstance(model, list):
             pred = []
             proba = []
@@ -240,7 +239,7 @@ def main():
                 sick_type_pred = np.insert(sick_type_pred, 5, 0, axis=1)
                 prediction_matrix[idx_of_sick] = sick_type_pred
                 prediction_matrix[:, 5] = 1 - sick_bool_pred
-
+                
                 sick_bool_proba = clf1.predict_proba(test_image_all)
                 sick_type_proba = clf2.predict_proba(test_image_sick)
                 sick_type_proba = np.insert(sick_type_proba, 5, 0, axis=1)

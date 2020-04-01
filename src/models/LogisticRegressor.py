@@ -22,10 +22,10 @@ class LogisticRegressor(Classifier):
                                    max_iter=200,
                                    multi_class='ovr',
                                    verbose=False,
-                                   warm_start=False)
-                                   #n_jobs=None)
-                                 #  l1_ratios=None)
-        self.classifier = OneVsRestClassifier(estimator=logit)
+                                   warm_start=False,
+                                   n_jobs=-1)
+                                   #l1_ratios=None)
+        self.classifier = OneVsRestClassifier(estimator=logit, n_jobs=-1)
 
     def train(self, X_train, y_train):
         if self.cv is True:
@@ -46,13 +46,16 @@ class LogisticRegressor(Classifier):
     def _research_hyperparameter(self, X_train, y_train):
 
 
-#        C = [1.*10**x for x in list(range(3))]
-#        gamma = [0.000001*10**x for x in list(range(5))]
-#        degree = [x for x in list(range(3, 6))]
-#        kernel = ['linear', 'rbf', 'poly']
-#        parameters = [{'estimator__C': C, 'estimator__kernel': [kernel[0]]},
-#                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]},
-#                      {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__degree': degree, 'estimator__kernel': [kernel[2]]}]
+        C = [1.*10**x for x in list(range(3))]
+        tol = [0.0001*10**x for x in list(range(3))]
+        fit_intercept = [False, True]
+        solver = ['liblinear','sag','newton-cg','lbfgs']
+        class_weight=[None, 'balanced']
+        multi_class = ['ovr','multinomial']
+        parameters = [{'estimator__C': C, 'estimator__tol': tol, 'estimator__fit_intercept':fit_intercept,'estimator__solver':[solver[0]],
+                       'estimator__class_weight':class_weight, 'estimator__multi_class':[multi_class[0]]},
+                      {'estimator__C': C, 'estimator__tol': tol, 'estimator__fit_intercept':fit_intercept,
+                       'estimator__solver':solver[1:], 'estimator__class_weight':class_weight, 'estimator__multi_class':multi_class}]
 
         
         self.classifier = GridSearchCV(self.classifier, parameters,
