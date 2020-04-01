@@ -120,7 +120,7 @@ def main():
     #predict = args.predict
     #verbose = args.verbose
 
-    classifier = 'SVM'
+    classifier = 'Fisher'
     verbose = True
     image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
@@ -166,8 +166,16 @@ def main():
             model1 = MLP(cv=False)
             model2 = MLP(cv=False)
 
+    elif classifier == 'Fisher':
+        classifier_list = ['Fisher']
+        if classifier_type == 1:
+            model = FisherDiscriminant(cv=False)
+        elif classifier_type == 2:
+            model1 = FisherDiscriminant(cv=False)
+            model2 = FisherDiscriminant(cv=False)
+
     elif classifier == 'all':
-        classifier_list = ['SVM', 'MLP']
+        classifier_list = ['SVM', 'MLP', 'Fisher']
         if classifier_type == 1:
             model_SVM = SVMClassifier(cv=False)
             model_MLP = MLP(cv=False)
