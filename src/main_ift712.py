@@ -3,6 +3,7 @@
 import argparse
 from src.models.SVMClassifier import SVMClassifier
 from src.models.MLP import MLP
+from src.models.RBF import RBFClassifier
 from src.DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
 from src.Metrics import Metrics
@@ -15,7 +16,7 @@ import copy
 Cours IFT712, projet de session
 Auteurs:
     Félix Dumais (14053686)
-    Joëlle Fréchette-Viens
+    Joëlle Fréchette-Viens (15057894)
     Nicolas Fontaine
 '''
 
@@ -98,7 +99,7 @@ def argument_parser():
     parser = argparse.ArgumentParser(usage='\n python3 main_ift712.py [model]',
                                      description="")
     parser.add_argument('--model', type=str, default="SVM",
-                        choices=["SVM", "MLP", "RandomForest", "LogisticRegressor", "all"])
+                        choices=["SVM", "MLP", "RBF", "RandomForest", "LogisticRegressor", "all"])
     parser.add_argument('--validation', type=float, default=0.1,
                         help='Percentage of training data to use for validation')
     parser.add_argument('--lr', type=float, default=0.001,
@@ -119,7 +120,7 @@ def main():
     #predict = args.predict
     #verbose = args.verbose
 
-    classifier = 'SVM'
+    classifier = 'RBF'#'SVM'
     verbose = True
     image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
@@ -164,6 +165,14 @@ def main():
         elif classifier_type == 2:
             model1 = MLP(cv=False)
             model2 = MLP(cv=False)
+
+    elif classifier == 'RBF':
+        classifier_list = ['RBF']
+        if classifier_type == 1:
+            model = RBFClassifier(cv=False)
+        elif classifier_type == 2:
+            model1 = RBFClassifier(cv=False)
+            model2 = RBFClassifier(cv=False)
 
     elif classifier == 'all':
         classifier_list = ['SVM', 'MLP']
