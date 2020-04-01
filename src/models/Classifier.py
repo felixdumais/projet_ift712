@@ -3,7 +3,6 @@ from abc import abstractmethod
 
 class Classifier:
     def __init__(self):
-        self.classifier = None
         pass
 
     def get_model(self):

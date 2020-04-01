@@ -1,7 +1,7 @@
 import os
 import matplotlib.image as mpimg
 import pandas as pd
-from src.utils import unique
+from utils import unique
 from tqdm import tqdm
 import numpy as np
 import cv2
@@ -375,7 +375,7 @@ class DataHandler:
         plt.subplots_adjust(wspace=0, hspace=0)
         plt.suptitle('Samples of dataset')
         for image in self.image_list_[:16]:
-            im = self.resample_image(image, 256, 256)
+            im = self.resample_image(image, 128, 128)
             plt.subplot(4, 4, idx + 1)  # .set_title(l)
             plt.imshow(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))
             plt.axis('off')

@@ -1,4 +1,4 @@
-from src.models.Classifier import Classifier
+from models.Classifier import Classifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.model_selection import GridSearchCV
