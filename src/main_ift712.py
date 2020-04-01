@@ -2,6 +2,7 @@
 
 import argparse
 from src.models.SVMClassifier import SVMClassifier
+from src.models.FisherDiscriminant import FisherDiscriminant
 from src.models.MLP import MLP
 from src.models.RBF import RBFClassifier
 from src.DataHandler import DataHandler
@@ -99,7 +100,8 @@ def argument_parser():
     parser = argparse.ArgumentParser(usage='\n python3 main_ift712.py [model]',
                                      description="")
     parser.add_argument('--model', type=str, default="SVM",
-                        choices=["SVM", "MLP", "RBF", "RandomForest", "LogisticRegressor", "all"])
+                        choices=["SVM", "Fisher", "MLP", "RBF", "RandomForest", "LogisticRegressor", "all"])
+
     parser.add_argument('--validation', type=float, default=0.1,
                         help='Percentage of training data to use for validation')
     parser.add_argument('--lr', type=float, default=0.001,
@@ -173,9 +175,17 @@ def main():
         elif classifier_type == 2:
             model1 = RBFClassifier(cv=False)
             model2 = RBFClassifier(cv=False)
+            
+    elif classifier == 'Fisher':
+        classifier_list = ['Fisher']
+        if classifier_type == 1:
+            model = FisherDiscriminant(cv=False)
+        elif classifier_type == 2:
+            model1 = FisherDiscriminant(cv=False)
+            model2 = FisherDiscriminant(cv=False)
 
     elif classifier == 'all':
-        classifier_list = ['SVM', 'MLP']
+        classifier_list = ['SVM', 'MLP', 'Fisher']
         if classifier_type == 1:
             model_SVM = SVMClassifier(cv=False)
             model_MLP = MLP(cv=False)
@@ -254,7 +264,6 @@ def main():
             sick_type_proba = np.insert(sick_type_proba, 5, 0, axis=1)
             proba_matrix[idx_of_sick] = sick_type_proba
             proba_matrix[:, 5] = sick_bool_proba[:, 0]
-
             pred = [prediction_matrix]
             proba = [proba_matrix]
 
