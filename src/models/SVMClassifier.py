@@ -12,9 +12,9 @@ class SVMClassifier(Classifier):
         super().__init__()
         self.cv = cv
         self.trained = False
-        svm = SVC(C=10,
+        svm = SVC(C=100,
                   degree=3,
-                  kernel='rbf',
+                  kernel='linear',
                   verbose=True,
                   gamma=0.01,
                   tol=0.001,

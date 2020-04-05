@@ -105,29 +105,41 @@ def argument_parser():
                                      description="")
     parser.add_argument('--model', type=str, default="SVM",
                         choices=["SVM", "Fisher", "MLP", "RBF", "RandomForest", "LogisticRegressor", "all"])
-
-    parser.add_argument('--validation', type=float, default=0.1,
-                        help='Percentage of training data to use for validation')
-    parser.add_argument('--lr', type=float, default=0.001,
-                        help='Learning rate')
-    parser.add_argument('--predict', default=None,
-                        help="Selected a saved trained model")
-    parser.add_argument('--metrics', action='store_true',
-                        help='Display different metrics to the user')
+    parser.add_argument('--train_size', type=float, default=0.85,
+                        help='Percentage of the dataset used for training')
+    parser.add_argument('--cv', type=bool, default=False,
+                        help='Use CV to do k-fold cross validation')
+    parser.add_argument('--classifier_type', type=int, default=1,
+                        help='Use CV to do k-fold cross validation')
     parser.add_argument('--verbose', '-v', action='store_true')
     return parser.parse_args()
 
 
 def main():
+    # args = argument_parser()
+    #
+    # classifier = args.model
+    # verbose = args.verbose
+    # cross_validation = args.cv
+    # classifier_type = args.classifier_type
+    # train_size = args.train_size
 
-    classifier = 'SVM'
 
-    verbose = True
-    image_path = '../data/sample/images'
+    image_path = '../data/sample/images_reduced_folder'
     label_full_path = '../data/sample/sample_labels.csv'
+    random_seed = 10
+
+    classifier = 'MLP'
+    verbose = True
     classifier_type = 1
     cross_validation = True
-    random_seed = 10
+    train_size = 0.85
+
+    if classifier_type != 1 and classifier_type != 2:
+        raise OSError('Wrong classifier type. Classifier type must be either 1 or 2')
+
+    if train_size <= 0 or train_size >= 1:
+        raise OSError('Wrong train size. Train size must be exclusively between 0 and 1')
 
     if verbose:
         print('Starting training ...')
@@ -147,11 +159,11 @@ def main():
         print('Training of the model...')
 
     train_image_all, test_image_all, train_labels_all, test_labels_all = train_test_split(image_all, labels_all,
-                                                                                          train_size=0.85,
+                                                                                          train_size=train_size,
                                                                                           random_state=random_seed)
     if classifier_type == 2:
         _, _, train_labels_bool, test_labels_bool = train_test_split(image_all, labels_bool,
-                                                                     train_size=0.85,
+                                                                     train_size=train_size,
                                                                      random_state=random_seed)
 
         train_image_sick = train_image_all[train_labels_bool == 1]
