@@ -10,10 +10,10 @@ class MLP(Classifier):
     def __init__(self, cv=False):
         super().__init__()
 
-        mlp = MLPClassifier(hidden_layer_sizes=(10, 10),
+        mlp = MLPClassifier(hidden_layer_sizes=(10, 10, 10),
                             activation='relu',
                             solver='adam',
-                            alpha=0.001,
+                            alpha=0.01,
                             batch_size=1000,
                             learning_rate='adaptive',
                             learning_rate_init=0.001,
