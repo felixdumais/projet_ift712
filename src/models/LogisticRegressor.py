@@ -2,8 +2,6 @@ from models.Classifier import Classifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import cohen_kappa_score, make_scorer
-
 
 
 class LogisticRegressor(Classifier):
@@ -63,7 +61,7 @@ class LogisticRegressor(Classifier):
                                        verbose=2,
                                        cv=3,
                                        return_train_score=True,
-                                       scoring="f1_weighted")
+                                       scoring="f1_macro")
 
         self.classifier.fit(X_train, y_train)
         print('Cross validation result')

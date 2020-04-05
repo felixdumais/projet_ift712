@@ -2,8 +2,6 @@ from models.Classifier import Classifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import cohen_kappa_score, make_scorer
-
 
 
 class RandomForest(Classifier):
@@ -67,7 +65,7 @@ class RandomForest(Classifier):
                                        verbose=2,
                                        cv=3,
                                        return_train_score=True,
-                                       scoring="f1_weighted")
+                                       scoring="f1_macro")
 
         self.classifier.fit(X_train, y_train)
         print('Cross validation result')

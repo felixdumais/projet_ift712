@@ -2,8 +2,8 @@ from models.Classifier import Classifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import cohen_kappa_score, make_scorer
 import pickle
+import time
 
 
 
@@ -118,6 +118,10 @@ class SVMClassifier(Classifier):
 
         """
 
+
+        start = time.time()
+        print("Start time computation")
+
         C = [1.*10**x for x in list(range(3))]
         gamma = [0.000001*10**x for x in list(range(5))]
         degree = [x for x in list(range(3, 6))]
@@ -126,13 +130,12 @@ class SVMClassifier(Classifier):
                       {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__kernel': [kernel[1]]},
                       {'estimator__C': C, 'estimator__gamma': gamma, 'estimator__degree': degree, 'estimator__kernel': [kernel[2]]}]
 
-        kappa_scorer = make_scorer(cohen_kappa_score)
         self.classifier = GridSearchCV(self.classifier, parameters,
                                        n_jobs=-1,
                                        verbose=2,
                                        cv=3,
                                        return_train_score=True,
-                                       scoring=kappa_scorer)
+                                       scoring='f1_macro')
 
         self.classifier.fit(X_train, y_train)
         print('Cross validation result')
@@ -142,6 +145,8 @@ class SVMClassifier(Classifier):
         print('Best hyperparameters: {}'.format(self.classifier.best_params_))
         print('Refit time: {}'.format(self.classifier.refit_time_))
 
+        end = time.time()
+        print(end - start)
 
 
 

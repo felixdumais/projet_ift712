@@ -1,4 +1,4 @@
-from src.models.Classifier import Classifier
+from models.Classifier import Classifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.model_selection import GridSearchCV
@@ -122,7 +122,7 @@ class FisherDiscriminant(Classifier):
                                        verbose=2,
                                        cv=3,
                                        return_train_score=True,
-                                       scoring='precision_macro')
+                                       scoring='f1_macro')
         self.classifier.fit(self.X_train, self.y_train)
         print('Cross validation result')
         print(self.classifier.cv_results_)

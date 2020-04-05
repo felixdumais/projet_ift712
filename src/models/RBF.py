@@ -1,13 +1,8 @@
-from src.models.Classifier import Classifier
+from models.Classifier import Classifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.gaussian_process.kernels import RBF
 from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import GridSearchCV
-
-from sklearn.model_selection import train_test_split
-import pandas as pd
-import numpy as np
 import pickle
 
 
@@ -103,7 +98,7 @@ class RBFClassifier(Classifier):
                                        verbose=2,
                                        cv=3,
                                        return_train_score=True,
-                                       scoring='precision_macro')
+                                       scoring='f1_macro')
         self.classifier.fit(self.X_train, self.y_train)
         print('Cross validation result')
         print(self.classifier.cv_results_)

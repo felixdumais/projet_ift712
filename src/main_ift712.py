@@ -1,16 +1,15 @@
 # -*- coding:utf-8 -*-
 
 import argparse
-from src.models.LogisticRegressor import LogisticRegressor
-from src.models.RandomForest import RandomForest
-from src.models.SVMClassifier import SVMClassifier
-from src.models.FisherDiscriminant import FisherDiscriminant
-from src.models.MLP import MLP
-from src.models.RBF import RBFClassifier
-from src.DataHandler import DataHandler
+from models.LogisticRegressor import LogisticRegressor
+from models.RandomForest import RandomForest
+from models.SVMClassifier import SVMClassifier
+from models.FisherDiscriminant import FisherDiscriminant
+from models.RBF import RBFClassifier
+from models.MLP import MLP
+from DataHandler import DataHandler
 from sklearn.model_selection import train_test_split
 from Metrics import Metrics
-from models.MLP import MLP
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -84,21 +83,22 @@ def display_metrics(classifier_list: list, test_labels_all, pred: list, proba: l
     print('Precision: {}'.format(precision))
     print('Recall: {}'.format(recall))
 
-#    titles = ['names', 'Cohen', 'F1_score', 'Accuracy', 'Precision', 'Recall']
-#    kappa_class_disp = ['%.4f' % elem for elem in kappa_class]
-#    f1_class_disp = ['%.4f' % elem for elem in f1_class]
-#    accuracy_class_disp = ['%.4f' % elem for elem in accuracy_class]
-#    precision_class_disp = ['%.4f' % elem for elem in precision_class]
-#    recall_class_disp = ['%.4f' % elem for elem in recall_class]
-#
-#    element = [titles] + list(
-#        zip(label_list, kappa_class_disp, f1_class_disp, accuracy_class_disp, precision_class_disp,
-#            recall_class_disp))
-#    for i, d in enumerate(element):
-#        line = '        |'.join(str(x).ljust(12) for x in d)
-#        print(line)
-#        if i == 0:
-#            print('-' * len(line))
+    titles = ['names', 'Cohen', 'F1_score', 'Accuracy', 'Precision', 'Recall']
+    kappa_class_disp = ['%.4f' % elem for elem in kappa_class]
+    f1_class_disp = ['%.4f' % elem for elem in f1_class]
+    accuracy_class_disp = ['%.4f' % elem for elem in accuracy_class]
+    precision_class_disp = ['%.4f' % elem for elem in precision_class]
+    recall_class_disp = ['%.4f' % elem for elem in recall_class]
+
+    element = [titles] + list(
+       zip(label_list, kappa_class_disp, f1_class_disp, accuracy_class_disp, precision_class_disp,
+           recall_class_disp))
+    for i, d in enumerate(element):
+       line = '        |'.join(str(x).ljust(12) for x in d)
+       print(line)
+       if i == 0:
+           print('-' * len(line))
+
 
 def argument_parser():
     parser = argparse.ArgumentParser(usage='\n python3 main_ift712.py [model]',
@@ -117,26 +117,31 @@ def argument_parser():
     parser.add_argument('--verbose', '-v', action='store_true')
     return parser.parse_args()
 
+
 def main():
 
-    classifier = 'RandomForest'
+    classifier = 'SVM'
 
     verbose = True
-    image_path = '../data/sample/images_min'
+    image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
     classifier_type = 1
+    cross_validation = True
     random_seed = 10
 
+    if verbose:
+        print('Starting training ...')
+        print('Classifier: {}'.format(classifier))
+        print('Type of classifier: {}'.format(classifier_type))
+        print('Cross validation: {}'.format(cross_validation))
 
     if verbose:
         print('Formatting dataset...')
     data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=32, resampled_height=32)
     image_all, labels_all = data.get_all_data()
     _, labels_bool = data.get_sick_bool_data()
-    image_sick, labels_sick = data.get_only_sick_data()
-#    data.plot_data()
-#    data.show_samples()
-
+    data.plot_data()
+    data.show_samples()
 
     if verbose:
         print('Training of the model...')
@@ -156,72 +161,72 @@ def main():
     if classifier == 'SVM':
         classifier_list = ['SVM']
         if classifier_type == 1:
-            model = SVMClassifier(cv=False)
+            model = SVMClassifier(cv=cross_validation)
         elif classifier_type == 2:
-            model1 = SVMClassifier()
-            model2 = SVMClassifier()
+            model1 = SVMClassifier(cv=cross_validation)
+            model2 = SVMClassifier(cv=cross_validation)
    
     elif classifier == 'LogisticRegressor':
         classifier_list = ['LogisticRegressor']
         model = LogisticRegressor()
         if classifier_type == 1:
-            model = LogisticRegressor(cv=True)
+            model = LogisticRegressor(cv=cross_validation)
         elif classifier_type == 2:
-            model1 = LogisticRegressor()
-            model2 = LogisticRegressor()
+            model1 = LogisticRegressor(cv=cross_validation)
+            model2 = LogisticRegressor(cv=cross_validation)
     
     elif classifier == 'MLP':
         classifier_list = ['MLP']
         if classifier_type == 1:
-            model = MLP(cv=False)
+            model = MLP(cv=cross_validation)
         elif classifier_type == 2:
-            model1 = MLP(cv=False)
-            model2 = MLP(cv=False)    
+            model1 = MLP(cv=cross_validation)
+            model2 = MLP(cv=cross_validation)
+
     elif classifier == 'RandomForest':
         classifier_list = ['RandomForest']
         model = RandomForest()
         if classifier_type == 1:
-            model = RandomForest(cv=True)
+            model = RandomForest(cv=cross_validation)
         elif classifier_type == 2:
-            model1 = RandomForest()
-            model2 = RandomForest()
+            model1 = RandomForest(cv=cross_validation)
+            model2 = RandomForest(cv=cross_validation)
 
     elif classifier == 'RBF':
         classifier_list = ['RBF']
         if classifier_type == 1:
-            model = RBFClassifier(cv=False)
+            model = RBFClassifier(cv=cross_validation)
         elif classifier_type == 2:
-            model1 = RBFClassifier(cv=False)
-            model2 = RBFClassifier(cv=False)
+            model1 = RBFClassifier(cv=cross_validation)
+            model2 = RBFClassifier(cv=cross_validation)
             
     elif classifier == 'Fisher':
         classifier_list = ['Fisher']
         if classifier_type == 1:
-            model = FisherDiscriminant(cv=False)
+            model = FisherDiscriminant(cv=cross_validation)
         elif classifier_type == 2:
-            model1 = FisherDiscriminant(cv=False)
-            model2 = FisherDiscriminant(cv=False)
+            model1 = FisherDiscriminant(cv=cross_validation)
+            model2 = FisherDiscriminant(cv=cross_validation)
 
     elif classifier == 'all':
         classifier_list = ['SVM', 'MLP', 'Fischer', 'rbf''LogisticRegressor', 'RandomForest']
         if classifier_type == 1:
-            model_SVM = SVMClassifier(cv=False)
-            model_MLP = MLP(cv=False)
-            model_Logit = LogisticRegressor(cv=False)
-            model_Forest = RandomForest(cv=False)
+            model_SVM = SVMClassifier(cv=cross_validation)
+            model_MLP = MLP(cv=cross_validation)
+            model_Logit = LogisticRegressor(cv=cross_validation)
+            model_Forest = RandomForest(cv=cross_validation)
             model = [model_SVM, model_MLP, model_Logit, model_Forest]
         elif classifier_type == 2:
-            model_SVM = SVMClassifier(cv=False)
-            model_MLP = MLP(cv=False)
-            model_Logit = LogisticRegressor(cv=False)
-            model_Forest = RandomForest(cv=False)
+            model_SVM = SVMClassifier(cv=cross_validation)
+            model_MLP = MLP(cv=cross_validation)
+            model_Logit = LogisticRegressor(cv=cross_validation)
+            model_Forest = RandomForest(cv=cross_validation)
             model1 = [model_SVM, model_MLP, model_Logit, model_Forest]
             model2 = copy.deepcopy(model1)
     # Do this with every models
     else:
         raise SyntaxError('Invalid model name')
-        
-    
+
     if classifier_type == 1:
         if isinstance(model, list):
             pred = []
@@ -239,7 +244,6 @@ def main():
 
         label_list = data.label_.columns.values.tolist()
         display_metrics(classifier_list, test_labels_all, pred, proba, label_list)
-
 
     elif classifier_type == 2:
         if isinstance(model1, list) and isinstance(model2, list):
@@ -295,6 +299,7 @@ def main():
         display_metrics(classifier_list, test_labels_all, pred, proba, label_list)
 
     plt.show()
+
 
 if __name__ == '__main__':
     main()
