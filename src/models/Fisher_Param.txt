@@ -1,0 +1,34 @@
+Cross validation result
+{'mean_fit_time': array([31.38441674, 30.5359772 , 30.17604812, 30.43614682, 31.02734987,
+       33.37094307, 31.60687232, 32.93401965, 34.20573139]), 'std_fit_time': array([3.92401192, 0.10615382, 0.25396959, 0.48868141, 1.00511594,
+       2.73850427, 1.3706326 , 0.65533539, 1.60353807]), 'mean_score_time': array([0.10625927, 0.14566135, 0.12370857, 0.13593817, 0.1417652 ,
+       0.13118943, 0.13561932, 0.12106419, 0.15395474]), 'std_score_time': array([0.03579784, 0.01093549, 0.02647419, 0.01875188, 0.01170634,
+       0.02283193, 0.02337944, 0.01616874, 0.00050868]), 'param_estimator__n_components': masked_array(data=[12, 13, 14, 12, 12, 13, 13, 14, 14],
+             mask=[False, False, False, False, False, False, False, False,
+                   False],
+       fill_value='?',
+            dtype=object), 'param_estimator__tol': masked_array(data=[--, --, --, 0.1, 0.01, 0.1, 0.01, 0.1, 0.01],
+             mask=[ True,  True,  True, False, False, False, False, False,
+                   False],
+       fill_value='?',
+            dtype=object), 'params': [{'estimator__n_components': 12}, {'estimator__n_components': 13}, {'estimator__n_components': 14}, {'estimator__n_components': 12, 'estimator__tol': 0.1}, {'estimator__n_components': 12, 'estimator__tol': 0.01}, {'estimator__n_components': 13, 'estimator__tol': 0.1}, {'estimator__n_components': 13, 'estimator__tol': 0.01}, {'estimator__n_components': 14, 'estimator__tol': 0.1}, {'estimator__n_components': 14, 'estimator__tol': 0.01}], 'split0_test_score': array([0.10123884, 0.10123884, 0.10123884, 0.10123884, 0.09935045,
+       0.10123884, 0.09935045, 0.10123884, 0.09935045]), 'split1_test_score': array([0.11209825, 0.11209825, 0.11209825, 0.11209825, 0.11295139,
+       0.11209825, 0.11295139, 0.11209825, 0.11295139]), 'split2_test_score': array([0.11440285, 0.11440285, 0.11440285, 0.11440285, 0.11714005,
+       0.11440285, 0.11714005, 0.11440285, 0.11714005]), 'mean_test_score': array([0.10924665, 0.10924665, 0.10924665, 0.10924665, 0.10981396,
+       0.10924665, 0.10981396, 0.10924665, 0.10981396]), 'std_test_score': array([0.00574001, 0.00574001, 0.00574001, 0.00574001, 0.00759386,
+       0.00574001, 0.00759386, 0.00574001, 0.00759386]), 'rank_test_score': array([4, 4, 4, 4, 1, 4, 1, 4, 1]), 'split0_train_score': array([0.7570734 , 0.7570734 , 0.7570734 , 0.7570734 , 0.81225521,
+       0.7570734 , 0.81225521, 0.7570734 , 0.81225521]), 'split1_train_score': array([0.78441188, 0.78441188, 0.78441188, 0.78441188, 0.81628653,
+       0.78441188, 0.81628653, 0.78441188, 0.81628653]), 'split2_train_score': array([0.76438659, 0.76438659, 0.76438659, 0.76438659, 0.80580242,
+       0.76438659, 0.80580242, 0.76438659, 0.80580242]), 'mean_train_score': array([0.76862396, 0.76862396, 0.76862396, 0.76862396, 0.81144805,
+       0.76862396, 0.81144805, 0.76862396, 0.81144805]), 'std_train_score': array([0.01155608, 0.01155608, 0.01155608, 0.01155608, 0.004318  ,
+       0.01155608, 0.004318  , 0.01155608, 0.004318  ])}
+Best estimator: OneVsRestClassifier(estimator=LinearDiscriminantAnalysis(n_components=12,
+                                                         priors=None,
+                                                         shrinkage=None,
+                                                         solver='svd',
+                                                         store_covariance=False,
+                                                         tol=0.01),
+                    n_jobs=2)
+Best score: 0.10981396285981317
+Best hyperparameters: {'estimator__n_components': 12, 'estimator__tol': 0.01}
+Refit time: 43.718764543533325

@@ -88,7 +88,7 @@ class RBFClassifier(Classifier):
         filename = '../trained_models/RBF_model.mdl'
         self.classifier = pickle.load(open(filename, 'rb'))
 
-    def _research_hyperparameter(self):
+    def _research_hyperparameter(self, X_train, y_train):
         n_restarts_optimizer = [10**x for x in list(range(1,3))]
         max_iter_predict = [10**x for x in list(range(1,3))]
         parameters = [{'estimator__n_restarts_optimizer': n_restarts_optimizer,'estimator__max_iter_predict': max_iter_predict}]
@@ -99,7 +99,7 @@ class RBFClassifier(Classifier):
                                        cv=3,
                                        return_train_score=True,
                                        scoring='f1_macro')
-        self.classifier.fit(self.X_train, self.y_train)
+        self.classifier.fit(X_train, y_train)
         print('Cross validation result')
         print(self.classifier.cv_results_)
         print('Best estimator: {}'.format(self.classifier.best_estimator_))
