@@ -38,7 +38,7 @@ def main():
     # train_size = args.train_size
 
 
-    image_path = '../data/sample/images_reduced_folder'
+    image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
     random_seed = 10
 

@@ -75,7 +75,7 @@ class DataHandler:
                     if image.ndim > 2:
                         image = image[:, :, 0]
 
-                    image_list.append(image)
+                    image_list.append(self.resample_image(image, self.resampled_width, self.resampled_height))
                     id_list.append(file)
 
                 pbar.update(1)
@@ -143,8 +143,8 @@ class DataHandler:
                                                 is not included as a pathology. Each row correspond to a new image. It
                                                 only represent the pathology of sick patients.
         """
-        image_list, id_list = self._import_png_folder()
-        image_list_resample = [self.resample_image(image, self.resampled_width, self.resampled_height) for image in image_list]
+        image_list_resample, id_list = self._import_png_folder()
+        # image_list_resample = [self.resample_image(image, self.resampled_width, self.resampled_height) for image in image_list]
         labels = self._import_csv()
 
         labels = labels[labels.iloc[:, 0].isin(id_list)]
