@@ -14,17 +14,24 @@ Auteurs:
 '''
 
 def argument_parser():
-    parser = argparse.ArgumentParser(usage='\n python3 main_ift712.py [model]',
-                                     description="")
+    parser = argparse.ArgumentParser(usage='\n python main_ift712.py'
+                                           '\n python main_ift712.py [model]'
+                                           '\n python main_ift712.py [model] [train_size]'
+                                           '\n python main_ift712.py [model] [train_size] [cv]'
+                                           '\n python main_ift712.py [model] [train_size] [cv] [classifier_type]'
+                                           '\n python main_ift712.py [model] [train_size] [cv] [classifier_type] [verbose]',
+                                     description="To use the program, no argument are mandatory.")
     parser.add_argument('--model', type=str, default="SVM",
+                        help='DEFAULT: SVM --> Model to train. If all is selected all the models are trained.',
                         choices=["SVM", "Fisher", "MLP", "RBF", "RandomForest", "LogisticRegressor", "all"])
     parser.add_argument('--train_size', type=float, default=0.85,
-                        help='Percentage of the dataset used for training')
+                        help='DEFAULT: 0.85 --> Percentage of the dataset used for training')
     parser.add_argument('--cv', type=bool, default=False,
-                        help='Use CV to do k-fold cross validation')
+                        help='DEFAULT: False --> Use CV to do k-fold cross validation')
     parser.add_argument('--classifier_type', type=int, default=1,
-                        help='Use CV to do k-fold cross validation')
-    parser.add_argument('--verbose', '-v', action='store_true')
+                        help='DEFAULT: 1 --> Use CV to do k-fold cross validation')
+    parser.add_argument('--verbose', '-v', action='store_true',
+                        help='To have some feed back from the program.')
     return parser.parse_args()
 
 
@@ -40,7 +47,6 @@ def main():
 
     image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
-    random_seed = 10
 
     classifier = 'all'
     verbose = True
