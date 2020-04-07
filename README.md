@@ -21,6 +21,6 @@ For your security, ensure that other users of your computer do not have read acc
 ## Running the tests
 To verify that the kaggle API, run the file test/kaggle_API_test.py in your terminal with the command `python test/kaggle_API_test.py`. If the API does not found the file kaggle.json this error appears *OSError: Could not find kaggle.json. Make sure it's located in ~/.kaggle/kaggle.json. Or use the environment method*. Go to the section *Usage of Kaggle API* to see where to install kaggle.json file.
 ## Authors
-* **FÃ©lix Dumais (14053686)** 
+* **Félix Dumais (14053686)** 
 * **Nicolas Fontaine (15203272)** 
-* **Joelle FrÃ©chette-Viens (15057894)** 
+* **Joelle Fréchette-Viens (15057894)** 
