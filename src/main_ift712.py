@@ -38,14 +38,14 @@ def main():
     # train_size = args.train_size
 
 
-    image_path = '../data/sample/images_reduced_folder'
+    image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
     random_seed = 10
 
-    classifier = 'all'
+    classifier = 'RandomForest'
     verbose = True
     classifier_type = 1
-    cross_validation = False
+    cross_validation = True
     train_size = 0.85
 
     if classifier_type != 1 and classifier_type != 2:
@@ -62,7 +62,7 @@ def main():
 
     if verbose:
         print('Formatting dataset...')
-    data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=32, resampled_height=32)
+    data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=16, resampled_height=32)
     data.plot_data()
     data.show_samples()
 
