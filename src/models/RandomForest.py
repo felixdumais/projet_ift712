@@ -9,32 +9,59 @@ class RandomForest(Classifier):
         super().__init__()
         self.cv = cv
         self.trained = False
-        forest = RandomForestClassifier(n_estimators=100,
-                                        criterion='gini',
-                                        max_depth=None,
-                                        min_samples_split=2,
-                                        min_samples_leaf=1,
-                                        min_weight_fraction_leaf=0,
-                                        max_features='sqrt',
-                                        max_leaf_nodes=None,
-                                        min_impurity_decrease=0,
-                                        bootstrap=True,
-                                        oob_score=False,
-                                        n_jobs=-1,
-                                        random_state=None,
-                                        verbose=False,
-                                        warm_start=False,
-                                        class_weight=None)
-
+        forest = RandomForestClassifier(bootstrap=True,
+                                         ccp_alpha=0.0,
+                                         class_weight='balanced',
+                                         criterion='gini',
+                                         max_depth=1.0,
+                                         max_features='log2',
+                                         max_leaf_nodes=None,
+                                         max_samples=None,
+                                         min_impurity_decrease=0,
+                                         min_impurity_split=None,
+                                         min_samples_leaf=1,
+                                         min_samples_split=2,
+                                         min_weight_fraction_leaf=0,
+                                         n_estimators=50, n_jobs=-1,
+                                         oob_score=True,
+                                         random_state=None,
+                                         verbose=False,
+                                         warm_start=False)
         self.classifier = OneVsRestClassifier(estimator=forest)
 
     def train(self, X_train, y_train):
+        """
+        Function that train the classifier
+
+        :arg
+            self (RandomForest): instance of the class
+            X_train (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                   normalized pixel value
+            y_train (numpy array): 1D or 2D numpy array corresponding to the targets
+
+        :return
+            None
+
+        """
         if self.cv is True:
             self._research_hyperparameter(X_train, y_train)
+            print('Done')
         else:
             self.classifier.fit(X_train, y_train)
 
     def predict(self, X_test):
+        """
+        Function that do a prediction on a set of data
+
+        :arg
+            self (RandomForest): instance of the class
+            X_test (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                  normalized pixel value
+
+        :return
+            y_pred (numpy array): 1D or 2D numpy array corresponding to the targets
+
+        """
         y_pred = self.classifier.predict(X_test)
         return y_pred
 
@@ -42,11 +69,34 @@ class RandomForest(Classifier):
         pass
 
     def predict_proba(self, X_test):
+        """
+        Function that do a prediction on a set of data
+
+        :arg
+            self (RandomForest): instance of the class
+            X_test (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                  normalized pixel value
+
+        :return
+            self.classifier.predict_proba(X_test) (numpy array): probability
+
+        """
         return self.classifier.predict_proba(X_test)
 
     def _research_hyperparameter(self, X_train, y_train):
+        """
+        Function that optimize some desired hyperparameter with cross-validation
 
+        :arg
+            self (RandomForest): instance of the class
+            X_train (numpy array): 2D numpy array where each rows represent a flatten image and each column is a
+                                   normalized pixel value
+            y_train (numpy array): 1D or 2D numpy array corresponding to the targets
 
+        :return
+            None
+
+        """
         n_estimators = [50+50*x for x in list(range(3))]
         criterion = ['gini', 'entropy']
         max_depth = [1.*10**x for x in list(range(3))]+[None]

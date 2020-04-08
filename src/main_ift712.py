@@ -61,14 +61,16 @@ def main():
     # clf1 = args.clf1
     # clf2 = args.clf2
 
+
     # Define the path of the images and the targets CSV folder
-    image_path = '../data/sample/images_reduced_folder'
+    image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
 
-    classifier = 'MLP'
+
+    classifier = 'LogisticRegressor'
     verbose = True
     classifier_type = 1
-    cross_validation = False
+    cross_validation = True
     train_size = 0.85
     clf1 = None
     clf2 = None

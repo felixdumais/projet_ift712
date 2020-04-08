@@ -391,10 +391,7 @@ class Trainer():
            zip(label_list, kappa_class_disp, f1_class_disp, accuracy_class_disp, precision_class_disp,
                recall_class_disp))
         for i, d in enumerate(element):
-           line = '        |'.join(str(x).ljust(12) for x in d)
+           line = '|'.join(str(x).ljust(19) for x in d)
            print(line)
            if i == 0:
-               print('-' * len(line))
-
-
-
+               print('-' * (len(line)-10))
