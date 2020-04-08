@@ -9,20 +9,17 @@ class LogisticRegressor(Classifier):
         super().__init__()
         self.cv = cv
         self.trained = False
-        logit = LogisticRegression(penalty='l2',
+        logit = LogisticRegression(C=1.0, class_weight='balanced',
                                    dual=False,
-                                   tol=0.005,
-                                   C=1.0,
                                    fit_intercept=False,
                                    intercept_scaling=1,
-                                   class_weight=None,
-                                   solver='lbfgs',
-                                   max_iter=200,
-                                   multi_class='ovr',
+                                   l1_ratio=None, max_iter=200,
+                                   multi_class='ovr', n_jobs=-1,
+                                   penalty='l2',
+                                   random_state=None,
+                                   solver='liblinear', tol=0.01,
                                    verbose=False,
-                                   warm_start=False,
-                                   n_jobs=-1)
-                                   #l1_ratios=None)
+                                   warm_start=False)
         self.classifier = OneVsRestClassifier(estimator=logit, n_jobs=-1)
 
     def train(self, X_train, y_train):

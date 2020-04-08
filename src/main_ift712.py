@@ -42,7 +42,7 @@ def main():
     label_full_path = '../data/sample/sample_labels.csv'
     random_seed = 10
 
-    classifier = 'RandomForest'
+    classifier = 'LogisticRegressor'
     verbose = True
     classifier_type = 1
     cross_validation = True
@@ -62,7 +62,7 @@ def main():
 
     if verbose:
         print('Formatting dataset...')
-    data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=16, resampled_height=32)
+    data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=16, resampled_height=16)
     data.plot_data()
     data.show_samples()
 

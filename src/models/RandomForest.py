@@ -9,22 +9,24 @@ class RandomForest(Classifier):
         super().__init__()
         self.cv = cv
         self.trained = False
-        forest = RandomForestClassifier(n_estimators=100,
-                                   criterion='gini',
-                                   max_depth=None,
-                                   min_samples_split=2,
-                                   min_samples_leaf=1,
-                                   min_weight_fraction_leaf=0,
-                                   max_features='sqrt',
-                                   max_leaf_nodes=None,
-                                   min_impurity_decrease=0,
-                                   bootstrap=True,
-                                   oob_score=False,
-                                   n_jobs=-1,
-                                   random_state=None,
-                                   verbose=False,
-                                   warm_start=False,
-                                   class_weight=None)
+        forest = RandomForestClassifier(bootstrap=True,
+                                         ccp_alpha=0.0,
+                                         class_weight='balanced',
+                                         criterion='gini',
+                                         max_depth=1.0,
+                                         max_features='log2',
+                                         max_leaf_nodes=None,
+                                         max_samples=None,
+                                         min_impurity_decrease=0,
+                                         min_impurity_split=None,
+                                         min_samples_leaf=1,
+                                         min_samples_split=2,
+                                         min_weight_fraction_leaf=0,
+                                         n_estimators=50, n_jobs=-1,
+                                         oob_score=True,
+                                         random_state=None,
+                                         verbose=False,
+                                         warm_start=False)
         self.classifier = OneVsRestClassifier(estimator=forest)
 
     def train(self, X_train, y_train):

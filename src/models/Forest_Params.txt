@@ -1,4 +1,4 @@
-max_features : Pour classification -> max_features="sqrt" est le meilleur par défaut
+﻿max_features : Pour classification -> max_features="sqrt" est le meilleur par défaut
 	       selon les résultats empiriques
 
 
@@ -8,3 +8,57 @@ Selon https://scikit-learn.org/stable/modules/ensemble.html#forest
 max_features="sqrt"
 max_depth=None
 min_samples_split=2
+
+
+Best hyperparameters: {'estimator__bootstrap': True, 'estimator__class_weight': 'balanced', 'estimator__criterion': 'entropy', 'estimator__max_depth': 1.0, 'estimator__max_features': 'sqrt', 'estimator__n_estimators': 100, 'estimator__oob_score': True}
+Refit time: 4.444611310958862
+Cohen: 0.1522733149163752
+F1: 0.25
+Accuracy: 0.7669724770642202
+Precision: 0.16579634464751958
+Recall: 0.508
+
+Best estimator: OneVsRestClassifier(estimator=RandomForestClassifier(bootstrap=True,
+                                                     ccp_alpha=0.0,
+                                                     class_weight='balanced',
+                                                     criterion='gini',
+                                                     max_depth=1.0,
+                                                     max_features='log2',
+                                                     max_leaf_nodes=None,
+                                                     max_samples=None,
+                                                     min_impurity_decrease=0,
+                                                     min_impurity_split=None,
+                                                     min_samples_leaf=1,
+                                                     min_samples_split=2,
+                                                     min_weight_fraction_leaf=0,
+                                                     n_estimators=50, n_jobs=-1,
+                                                     oob_score=True,
+                                                     random_state=None,
+                                                     verbose=False,
+                                                     warm_start=False),
+                    n_jobs=None)
+Best score: 0.1527897054726959
+Best hyperparameters: {'estimator__bootstrap': True, 'estimator__class_weight': 'balanced', 'estimator__criterion': 'gini', 'estimator__max_depth': 1.0, 'estimator__max_features': 'log2', 'estimator__n_estimators': 50, 'estimator__oob_score': True}
+Refit time: 6.781933069229126
+Cohen: 0.12463643999407104
+F1: 0.23824829248694254
+Accuracy: 0.6994054696789537
+Precision: 0.15031685678073511
+Recall: 0.57405614714424
+names              |Cohen              |F1_score           |Accuracy           |Precision          |Recall             
+-------------------------------------------------------------------------------------------------------------
+Emphysema          |0.0206             |0.0485             |0.8133             |0.0263             |0.3077             
+Infiltration       |0.1461             |0.3605             |0.6076             |0.2527             |0.6284             
+Pleural_Thickening |0.0487             |0.1043             |0.7551             |0.0594             |0.4286             
+Pneumothorax       |0.0134             |0.0984             |0.6730             |0.0570             |0.3571             
+Cardiomegaly       |-0.0022            |0.0352             |0.7396             |0.0190             |0.2353             
+No Finding         |0.1854             |0.6343             |0.5969             |0.6405             |0.6282             
+Atelectasis        |0.0810             |0.2051             |0.6314             |0.1246             |0.5797             
+Edema              |0.0668             |0.0963             |0.7099             |0.0508             |0.9286             
+Effusion           |0.0874             |0.2385             |0.6052             |0.1490             |0.5977             
+Consolidation      |0.0790             |0.1529             |0.6576             |0.0861             |0.6842             
+Mass               |0.0055             |0.0760             |0.6243             |0.0421             |0.3939             
+Nodule             |0.0066             |0.1076             |0.6647             |0.0642             |0.3333             
+Fibrosis           |0.0264             |0.0628             |0.7515             |0.0340             |0.4118             
+Pneumonia          |0.0151             |0.0330             |0.7907             |0.0172             |0.3750             
+Hernia             |0.0000             |0.0000             |0.8704             |0.0000             |0.0000             

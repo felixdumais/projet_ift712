@@ -1,4 +1,4 @@
-Penalty : l2 est celui qu'on a vu dans le cours.
+﻿Penalty : l2 est celui qu'on a vu dans le cours.
 
 dual : Fonctionne juste pour pen=l2 et solver=liblinear.
        améliore un peu les résultats quand je le met
@@ -21,3 +21,41 @@ class_weight : du meilleur au pire : None, balanced
 solver : liblinear est recommendé pour les smalls datasets (je fais mes tests avec 49 images)
          sag, saga, lbfgs et newton-cg lancent une erreur "'NoneType' object has no attribute 'write'"
          l'erreur est résolue quand on enlève le multi threading forcé (n_jobs=-1)
+
+Best estimator: OneVsRestClassifier(estimator=LogisticRegression(C=1.0, class_weight='balanced',
+                                                 dual=False,
+                                                 fit_intercept=False,
+                                                 intercept_scaling=1,
+                                                 l1_ratio=None, max_iter=200,
+                                                 multi_class='ovr', n_jobs=-1,
+                                                 penalty='l2',
+                                                 random_state=None,
+                                                 solver='liblinear', tol=0.01,
+                                                 verbose=False,
+                                                 warm_start=False),
+                    n_jobs=-1)
+Best score: 0.15506080445002549
+Best hyperparameters: {'estimator__C': 1.0, 'estimator__class_weight': 'balanced', 'estimator__fit_intercept': False, 'estimator__multi_class': 'ovr', 'estimator__solver': 'liblinear', 'estimator__tol': 0.01}
+Refit time: 3.186736822128296
+Cohen: 0.14883082210510812
+F1: 0.2548656163113994
+Accuracy: 0.7450653983353152
+Precision: 0.1675296984465428
+Recall: 0.5324298160696999
+names              |Cohen              |F1_score           |Accuracy           |Precision          |Recall             
+-------------------------------------------------------------------------------------------------------------
+Emphysema          |-0.0294            |0.0000             |0.7967             |0.0000             |0.0000             
+Infiltration       |0.1296             |0.3397             |0.6302             |0.2477             |0.5405             
+Pleural_Thickening |0.0243             |0.0811             |0.7574             |0.0464             |0.3214             
+Pneumothorax       |0.0385             |0.1186             |0.7348             |0.0711             |0.3571             
+Cardiomegaly       |0.0263             |0.0622             |0.7848             |0.0341             |0.3529             
+No Finding         |0.2458             |0.6497             |0.6243             |0.6751             |0.6261             
+Atelectasis        |0.1115             |0.2286             |0.6790             |0.1423             |0.5797             
+Edema              |0.0359             |0.0656             |0.7967             |0.0355             |0.4286             
+Effusion           |0.1170             |0.2579             |0.6647             |0.1672             |0.5632             
+Consolidation      |0.0341             |0.1085             |0.7265             |0.0636             |0.3684             
+Mass               |0.0129             |0.0823             |0.6552             |0.0459             |0.3939             
+Nodule             |0.0165             |0.1161             |0.6742             |0.0695             |0.3529             
+Fibrosis           |0.0287             |0.0637             |0.8252             |0.0357             |0.2941             
+Pneumonia          |0.0127             |0.0303             |0.8478             |0.0161             |0.2500             
+Hernia             |0.0000             |0.0000             |0.9786             |0.0000             |0.0000  
