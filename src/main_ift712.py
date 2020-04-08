@@ -14,6 +14,15 @@ Auteurs:
 '''
 
 def argument_parser():
+    """
+    Function instanciate the class ArgumentParser so we parse argument through the terminal
+
+    :arg
+        None
+
+    :return
+        parser.parse_args() (argparse.Namespace): Return namespaces pass with argumentparser
+    """
     parser = argparse.ArgumentParser(usage='\n python main_ift712.py'
                                            '\n python main_ift712.py [model]'
                                            '\n python main_ift712.py [model] [train_size]'
@@ -41,26 +50,28 @@ def argument_parser():
 
 
 def main():
-    # args = argument_parser()
-    #
+    args = argument_parser()
+
+    # Get variables pass with argument parser
     # classifier = args.model
     # verbose = args.verbose
     # cross_validation = args.cv
     # classifier_type = args.classifier_type
     # train_size = args.train_size
-    # clf1 = args.clf1'
+    # clf1 = args.clf1
     # clf2 = args.clf2
 
+    # Define the path of the images and the targets CSV folder
     image_path = '../data/sample/images_reduced_folder'
     label_full_path = '../data/sample/sample_labels.csv'
 
-    classifier = 'Fisher'
+    classifier = 'MLP'
     verbose = True
-    classifier_type = 2
+    classifier_type = 1
     cross_validation = False
     train_size = 0.85
-    clf1 = 'trained_models/FisherDiscriminant_bool'
-    clf2 = 'trained_models/FisherDiscriminant_sick'
+    clf1 = None
+    clf2 = None
 
     if classifier_type != 1 and classifier_type != 2:
         raise OSError('Wrong classifier type. Classifier type must be either 1 or 2')
@@ -77,20 +88,27 @@ def main():
 
     if verbose:
         print('Formatting dataset...')
+
+    # Instanciate DataHandler
     data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=32, resampled_height=32)
+
+    # Plot data and samples from the dataset
     data.plot_data()
     data.show_samples()
 
     if verbose:
         print('Training of the model...')
 
+    # Instanciate Trainer variable
     trainer = Trainer(cross_validation, data, classifier_type, train_size, classifier)
     if clf1 is not None or clf2 is not None:
+        # Prediction with already saved models
         trainer.predict_with_saved_model(clf1, clf2)
     else:
+        # Training on images
         trainer.training()
 
-    plt.show()
+    plt.show(block=True)
 
 
 if __name__ == '__main__':
