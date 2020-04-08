@@ -10,7 +10,7 @@ class FisherDiscriminant(Classifier):
         super().__init__()
         self.cv = cv
         self.trained = False
-        self.classifier = OneVsRestClassifier(LinearDiscriminantAnalysis(solver='svd', tol=0.1, n_components=12), n_jobs = 2)
+        self.classifier = OneVsRestClassifier(LinearDiscriminantAnalysis(solver='svd', tol=0.01, n_components=12), n_jobs = 2)
         #svd : this solver is recommended for data with a large number of features. 
         #Any other solver causes a MemoryError because of the size of the samples. 
         #Shrinkage is impossible with this solver (set to None by default).
@@ -69,35 +69,6 @@ class FisherDiscriminant(Classifier):
         """
         return self.classifier.predict_proba(X_test)
 
-    def save_model(self):
-        """
-        Function that saves the classifier
-
-        :arg
-            self (FisherDiscriminant): instance of the class
-
-        :return
-            None
-
-        """
-        filename = '../trained_models/Fisher_model.mdl'
-        pickle.dump(self.classifier, open(filename, 'wb'))
-        
-        
-    def load_model(self):
-        """
-        Function that loads the classifier
-
-        :arg
-            self (FisherDiscriminant): instance of the class
-
-        :return
-            None
-
-        """
-        filename = '../trained_models/Fisher_model.mdl'
-        self.classifier = pickle.load(open(filename, 'rb'))
-
     def _research_hyperparameter(self, X_train, y_train):
         """
         Function that optimize some desired hyperparameters with cross-validation
@@ -113,7 +84,7 @@ class FisherDiscriminant(Classifier):
 
         """
         n_components = [12 + x for x in list(range(3))]
-        tol = [10^(-1*x) for x in list(range(1,3))]
+        tol = [10**(-1*x) for x in list(range(1,3))]
         parameters = [{'estimator__n_components': n_components},
                       {'estimator__n_components': n_components, 'estimator__tol': tol}]
 
@@ -123,7 +94,7 @@ class FisherDiscriminant(Classifier):
                                        cv=3,
                                        return_train_score=True,
                                        scoring='f1_macro')
-        self.classifier.fit(self.X_train, self.y_train)
+        self.classifier.fit(X_train, y_train)
         print('Cross validation result')
         print(self.classifier.cv_results_)
         print('Best estimator: {}'.format(self.classifier.best_estimator_))

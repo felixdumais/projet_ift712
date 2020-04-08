@@ -45,37 +45,6 @@ class Metrics:
 
         return mean_accuracy, accuracy_class
 
-    def plot_confusion_matrix(self, y_true, y_pred, class_names):
-        """
-        Function that plot all the confusion matrices of each class
-
-        :arg
-            self (Metrics): instance of the class
-            y_true (numpy array): 1D or 2D numpy array where each rows correspond to an image and each column correspond
-                                  to the true pathology
-            y_pred (numpy array): 1D or 2D numpy array where each rows correspond to an image and each column correspond
-                                  to the predicted pathology
-            class_names (list): list of class names
-
-        :return
-            None
-
-        """
-        titles_options = [("Confusion matrix, without normalization", None),
-                          ("Normalized confusion matrix", 'true')]
-
-        for i, label in enumerate(class_names):
-            fig, ax = plt.subplots(1, 2)
-            j = 0
-            for title, normalize in titles_options:
-                confusion_matrix_res = confusion_matrix(y_true[:, i], y_pred[:, i], normalize=normalize)
-                disp = ConfusionMatrixDisplay(confusion_matrix_res,
-                                             display_labels=['Negative', 'Positive'])
-                disp.plot(cmap=plt.cm.Blues, ax=ax[j])
-                fig.suptitle(label)
-                ax[j].set_title(title)
-                j += 1
-
     def roc_metrics(self, y_true, y_proba):
         """
         Function that compute the false and true positive rates

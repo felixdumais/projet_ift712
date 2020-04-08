@@ -2,8 +2,12 @@ from models.Classifier import Classifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import train_test_split
 from itertools import combinations_with_replacement
+import matplotlib.pyplot as plt
 import time
+import numpy as np
+
 
 
 class MLP(Classifier):
@@ -51,6 +55,24 @@ class MLP(Classifier):
             self._research_hyperparameter(X_train, y_train)
             print('Done')
         else:
+            # accuracy_train = []
+            # accuracy_test = []
+            # n_iter = self.classifier.estimator.max_iter
+            # X_tr, X_val, y_tr, y_val = train_test_split(X_train, y_train, train_size=0.9)
+            # for i in range(n_iter):
+            #     self.classifier.partial_fit(X_tr, y_tr, classes=np.unique(y_train))
+            #     accuracy_train.append(self.classifier.score(X_val, y_val))
+            #     accuracy_test.append(self.classifier.score(X_tr, X_tr))
+            #
+            # epoch_list = list(range(n_iter))
+            # plt.figure()
+            # plt.xlabel('Epochs')
+            # plt.ylabel('Accuracy')
+            # plt.title('Accuracy evolution')
+            # plt.plot(epoch_list, accuracy_train, label='Train')
+            # plt.plot(epoch_list, accuracy_train, label='Validation')
+            # plt.legend()
+            # plt.show(block=False)
             self.classifier.fit(X_train, y_train)
 
     def predict(self, image_to_predict):
