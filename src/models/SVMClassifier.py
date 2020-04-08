@@ -19,7 +19,7 @@ class SVMClassifier(Classifier):
                   gamma=0.01,
                   tol=0.001,
                   probability=True,
-                  max_iter=-1)
+                  max_iter=20000)
         self.classifier = OneVsRestClassifier(estimator=svm, n_jobs=-1)
 
     def train(self, X_train, y_train):
@@ -74,34 +74,6 @@ class SVMClassifier(Classifier):
 
         """
         return self.classifier.predict_proba(X_test)
-
-    def save_model(self):
-        """
-        Function that saves the classifier
-
-        :arg
-            self (SVMClassifier): instance of the class
-
-        :return
-            None
-
-        """
-        filename = '../trained_models/SVM_model.mdl'
-        pickle.dump(self.classifier, open(filename, 'wb'))
-
-    def load_model(self):
-        """
-        Function that loads the classifier
-
-        :arg
-            self (SVMClassifier): instance of the class
-
-        :return
-            None
-
-        """
-        filename = '../trained_models/SVM_model.mdl'
-        self.classifier = pickle.load(open(filename, 'rb'))
 
     def _research_hyperparameter(self, X_train, y_train):
         """

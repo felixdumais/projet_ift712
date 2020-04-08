@@ -34,7 +34,7 @@ class DataHandler:
         """
         check_dir = '../data/sample'
         if os.path.isdir(check_dir):
-            print('Files already downloaded')
+            print('Kaggle dataset already downloaded !')
             return None
 
         os.system('kaggle datasets download -d nih-chest-xrays/sample')
@@ -45,14 +45,14 @@ class DataHandler:
 
         zip_file = 'sample.zip'
 
-        print('Extracting zip file ...')
+        print('Extracting zip file from the Kaggle dataset...')
         with zipfile.ZipFile(zip_file, 'r') as zip_obj:
             zip_obj.extractall(save_directory)
 
         os.remove(zip_file)
         shutil.rmtree('../data/sample/sample')
 
-        print('File extracted')
+        print('Kaggle dataset extracted extracted')
 
     def _import_png_folder(self):
         """
@@ -67,6 +67,8 @@ class DataHandler:
         """
         image_list = []
         id_list = []
+
+        print('Downloading images into the memory')
         with tqdm(total=len(os.listdir(self.image_path))) as pbar:
             for file in os.listdir(self.image_path):
                 if file.endswith(".png"):

@@ -57,36 +57,6 @@ class RBFClassifier(Classifier):
     def error(self):
         pass
 
-    #def get_model(self):
-    #    return self.classifier
-    
-    def save_model(self):
-        """
-        Function that saves the classifier
-    
-        :arg
-            self (SVMClassifier): instance of the class
-    
-        :return
-            None
-    
-        """
-        filename = '../trained_models/RBF_model.mdl'
-        pickle.dump(self.classifier, open(filename, 'wb'))
-
-    def load_model(self):
-        """
-        Function that loads the classifier
-
-        :arg
-            self (SVMClassifier): instance of the class
-
-        :return
-            None
-
-        """
-        filename = '../trained_models/RBF_model.mdl'
-        self.classifier = pickle.load(open(filename, 'rb'))
 
     def _research_hyperparameter(self, X_train, y_train):
         n_restarts_optimizer = [10**x for x in list(range(1,3))]

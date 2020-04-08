@@ -69,35 +69,6 @@ class FisherDiscriminant(Classifier):
         """
         return self.classifier.predict_proba(X_test)
 
-    def save_model(self):
-        """
-        Function that saves the classifier
-
-        :arg
-            self (FisherDiscriminant): instance of the class
-
-        :return
-            None
-
-        """
-        filename = '../trained_models/Fisher_model.mdl'
-        pickle.dump(self.classifier, open(filename, 'wb'))
-        
-        
-    def load_model(self):
-        """
-        Function that loads the classifier
-
-        :arg
-            self (FisherDiscriminant): instance of the class
-
-        :return
-            None
-
-        """
-        filename = '../trained_models/Fisher_model.mdl'
-        self.classifier = pickle.load(open(filename, 'rb'))
-
     def _research_hyperparameter(self, X_train, y_train):
         """
         Function that optimize some desired hyperparameters with cross-validation

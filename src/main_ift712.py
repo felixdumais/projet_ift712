@@ -32,6 +32,11 @@ def argument_parser():
                         help='DEFAULT: 1 --> Use CV to do k-fold cross validation')
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='To have some feed back from the program.')
+    parser.add_argument('--clf1', type=str, default=None,
+                        help='DEFAULT: None --> Specify saved classifier.')
+    parser.add_argument('--clf2', type=str, default=None,
+                        help='DEFAULT: None --> Specify saved classifier.')
+
     return parser.parse_args()
 
 
@@ -43,16 +48,19 @@ def main():
     # cross_validation = args.cv
     # classifier_type = args.classifier_type
     # train_size = args.train_size
+    # clf1 = args.clf1'
+    # clf2 = args.clf2
 
-
-    image_path = '../data/sample/images'
+    image_path = '../data/sample/images_reduced_folder'
     label_full_path = '../data/sample/sample_labels.csv'
 
-    classifier = 'all'
+    classifier = 'Fisher'
     verbose = True
-    classifier_type = 1
+    classifier_type = 2
     cross_validation = False
     train_size = 0.85
+    clf1 = 'trained_models/FisherDiscriminant_bool'
+    clf2 = 'trained_models/FisherDiscriminant_sick'
 
     if classifier_type != 1 and classifier_type != 2:
         raise OSError('Wrong classifier type. Classifier type must be either 1 or 2')
@@ -65,6 +73,7 @@ def main():
         print('Classifier: {}'.format(classifier))
         print('Type of classifier: {}'.format(classifier_type))
         print('Cross validation: {}'.format(cross_validation))
+        print('Train size: {}'.format(train_size))
 
     if verbose:
         print('Formatting dataset...')
@@ -76,7 +85,10 @@ def main():
         print('Training of the model...')
 
     trainer = Trainer(cross_validation, data, classifier_type, train_size, classifier)
-    trainer.training()
+    if clf1 is not None or clf2 is not None:
+        trainer.predict_with_saved_model(clf1, clf2)
+    else:
+        trainer.training()
 
     plt.show()
 
