@@ -47,6 +47,7 @@ class RandomForest(Classifier):
             self._research_hyperparameter(X_train, y_train)
             print('Done')
         else:
+            print('Fitting on Random Forest Classifier...')
             self.classifier.fit(X_train, y_train)
 
     def predict(self, X_test):

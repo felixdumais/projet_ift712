@@ -25,7 +25,9 @@ class RBFClassifier(Classifier):
     def train(self, X_train, y_train):
         if self.cv is True:
             self._research_hyperparameter(X_train, y_train)
-        self.classifier.fit(X_train, y_train)
+        else:
+            print('Fitting on RBF Classifier...')
+            self.classifier.fit(X_train, y_train)
         
     def predict(self, image_to_predict):
         """

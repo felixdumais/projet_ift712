@@ -4,6 +4,7 @@ import argparse
 from DataHandler import DataHandler
 import matplotlib.pyplot as plt
 from Trainer import Trainer
+import time
 
 '''
 Cours IFT712, projet de session
@@ -104,9 +105,14 @@ def main():
     if clf1 is not None or clf2 is not None:
         # Prediction with already saved models
         trainer.predict_with_saved_model(clf1, clf2)
+
+
     else:
         # Training on images
+        start = time.time()
         trainer.training()
+        end = time.time()
+        print(end - start)
 
     plt.show(block=True)
 

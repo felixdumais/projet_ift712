@@ -15,7 +15,7 @@ class SVMClassifier(Classifier):
         svm = SVC(C=100,
                   degree=3,
                   kernel='linear',
-                  verbose=True,
+                  verbose=False,
                   gamma=0.01,
                   tol=0.001,
                   probability=True,
@@ -39,6 +39,7 @@ class SVMClassifier(Classifier):
         if self.cv is True:
             self._research_hyperparameter(X_train, y_train)
         else:
+            print('Fitting on SVM Classifier... This operation may take a few hours.')
             self.classifier.fit(X_train, y_train)
 
     def predict(self, X_test):

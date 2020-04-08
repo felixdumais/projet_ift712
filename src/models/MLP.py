@@ -23,7 +23,7 @@ class MLP(Classifier):
                             learning_rate_init=0.001,
                             tol=1e-4,
                             verbose=True,
-                            max_iter=25,
+                            max_iter=50,
                             shuffle=True,
                             warm_start=True,
                             early_stopping=True,
@@ -73,6 +73,7 @@ class MLP(Classifier):
             # plt.plot(epoch_list, accuracy_train, label='Validation')
             # plt.legend()
             # plt.show(block=False)
+            print('Fitting on MLP Classifier...')
             self.classifier.fit(X_train, y_train)
 
     def predict(self, image_to_predict):

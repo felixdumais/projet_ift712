@@ -36,6 +36,7 @@ class FisherDiscriminant(Classifier):
         if self.cv is True:
             self._research_hyperparameter(X_train, y_train)
         else:
+            print('Fitting on Fisher Discriminant Classifier...')
             self.classifier.fit(X_train, y_train)
 
     def predict(self, X_test):
