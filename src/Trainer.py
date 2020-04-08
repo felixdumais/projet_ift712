@@ -308,7 +308,7 @@ class Trainer():
             self.display_metrics(classifier_list, test_labels_all, pred, proba, label_list)
 
     @staticmethod
-    def display_metrics(self, classifier_list: list, test_labels_all, pred: list, proba: list, label_list: list):
+    def display_metrics(classifier_list: list, test_labels_all, pred: list, proba: list, label_list: list):
         """
         Function that display some metrics in regard of the training results
 

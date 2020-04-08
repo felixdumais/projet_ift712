@@ -53,27 +53,25 @@ def main():
     args = argument_parser()
 
     # Get variables pass with argument parser
-    # classifier = args.model
-    # verbose = args.verbose
-    # cross_validation = args.cv
-    # classifier_type = args.classifier_type
-    # train_size = args.train_size
-    # clf1 = args.clf1
-    # clf2 = args.clf2
-
+    classifier = args.model
+    verbose = args.verbose
+    cross_validation = args.cv
+    classifier_type = args.classifier_type
+    train_size = args.train_size
+    clf1 = args.clf1
+    clf2 = args.clf2
 
     # Define the path of the images and the targets CSV folder
     image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
 
-
-    classifier = 'LogisticRegressor'
-    verbose = True
-    classifier_type = 1
-    cross_validation = True
-    train_size = 0.85
-    clf1 = None
-    clf2 = None
+    # classifier = 'LogisticRegressor'
+    # verbose = True
+    # classifier_type = 1
+    # cross_validation = True
+    # train_size = 0.85
+    # clf1 = None
+    # clf2 = None
 
     if classifier_type != 1 and classifier_type != 2:
         raise OSError('Wrong classifier type. Classifier type must be either 1 or 2')

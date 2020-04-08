@@ -10,11 +10,14 @@ class FisherDiscriminant(Classifier):
         super().__init__()
         self.cv = cv
         self.trained = False
-        self.classifier = OneVsRestClassifier(LinearDiscriminantAnalysis(solver='svd', tol=0.01, n_components=12), n_jobs = 2)
-        #svd : this solver is recommended for data with a large number of features. 
-        #Any other solver causes a MemoryError because of the size of the samples. 
-        #Shrinkage is impossible with this solver (set to None by default).
-        #tol set to 0.1 and n_components set to 12 following an optimisation of the hyperparameters with _research_hyperparameters       self.kfolded = True
+        self.classifier = OneVsRestClassifier(LinearDiscriminantAnalysis(solver='svd', tol=0.01, n_components=12),
+                                              n_jobs=-1)
+
+        # svd : this solver is recommended for data with a large number of features.
+        # Any other solver causes a MemoryError because of the size of the samples.
+        # Shrinkage is impossible with this solver (set to None by default).
+        # tol set to 0.1 and n_components set to 12 following an optimisation of the hyperparameters with
+        # _research_hyperparameters
 
     def train(self, X_train, y_train):
         """
@@ -84,7 +87,7 @@ class FisherDiscriminant(Classifier):
 
         """
         n_components = [12 + x for x in list(range(3))]
-        tol = [10**(-1*x) for x in list(range(1,3))]
+        tol = [10**(-1*x) for x in list(range(1, 3))]
         parameters = [{'estimator__n_components': n_components},
                       {'estimator__n_components': n_components, 'estimator__tol': tol}]
 

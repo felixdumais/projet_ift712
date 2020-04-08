@@ -7,12 +7,18 @@ import pickle
 
 
 class RBFClassifier(Classifier):
-    def __init__(self, cv = False):#X_train, X_test, y_train, y_test, loss):
+    def __init__(self, cv=False):
 
-        super().__init__()#(X_train, X_test, y_train, y_test, loss)
+        super().__init__()
         kernel = RBF(length_scale=1.0)
-        self.classifier = OneVsRestClassifier(GaussianProcessClassifier(kernel=kernel, optimizer='fmin_l_bfgs_b', n_restarts_optimizer=2, max_iter_predict=10, warm_start=False, copy_X_train=True, random_state=None, n_jobs=2))
-        #self.kfolded = True
+        self.classifier = OneVsRestClassifier(GaussianProcessClassifier(kernel=kernel,
+                                                                        optimizer='fmin_l_bfgs_b',
+                                                                        n_restarts_optimizer=2,
+                                                                        max_iter_predict=10,
+                                                                        warm_start=False,
+                                                                        copy_X_train=True,
+                                                                        random_state=None,
+                                                                        n_jobs=-1))
         self.cv = cv
         self.trained = False
 
@@ -56,7 +62,6 @@ class RBFClassifier(Classifier):
 
     def error(self):
         pass
-
 
     def _research_hyperparameter(self, X_train, y_train):
         n_restarts_optimizer = [10**x for x in list(range(1,3))]

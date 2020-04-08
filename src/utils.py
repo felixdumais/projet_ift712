@@ -1,4 +1,13 @@
 def unique(list1: list):
+    """
+    Function that return a list with unique elements
+
+    :arg
+        list1 (list): a python list
+
+    :return
+        unique_list (list): List containing unique element
+    """
     # intilize a null list
     unique_list = []
 
