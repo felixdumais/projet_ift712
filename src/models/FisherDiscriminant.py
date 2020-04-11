@@ -11,10 +11,7 @@ class FisherDiscriminant(Classifier):
         self.cv = cv
         self.trained = False
         self.classifier = OneVsRestClassifier(LinearDiscriminantAnalysis(solver='svd', tol=0.01, n_components=12), n_jobs = 2)
-        #svd : this solver is recommended for data with a large number of features. 
-        #Any other solver causes a MemoryError because of the size of the samples. 
-        #Shrinkage is impossible with this solver (set to None by default).
-        #tol set to 0.1 and n_components set to 12 following an optimisation of the hyperparameters with _research_hyperparameters       self.kfolded = True
+ 
 
     def train(self, X_train, y_train):
         """
