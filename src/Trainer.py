@@ -239,7 +239,14 @@ class Trainer():
                 sick_bool_pred = model1.predict(test_image_all)
                 idx_of_sick = np.nonzero(sick_bool_pred == 1)
                 test_image_sick = test_image_all[idx_of_sick]
-                sick_type_pred = model2.predict(test_image_sick)
+
+                try:
+                    sick_type_pred = model2.predict(test_image_sick)
+                except Exception as e:
+                    print(e)
+                    print('No sick patient found')
+                    return None
+
                 sick_type_pred = np.insert(sick_type_pred, 5, 0, axis=1)
                 prediction_matrix[idx_of_sick] = sick_type_pred
                 prediction_matrix[:, 5] = 1 - sick_bool_pred
