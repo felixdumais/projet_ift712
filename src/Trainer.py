@@ -185,7 +185,7 @@ class Trainer():
                 model.save_model(filename=model.__class__.__name__ + '_all')
 
             label_list = self.data.label_.columns.values.tolist()
-            self.display_metrics(classifier_list, test_labels_all, pred, proba, label_list)
+            self.display_metrics( classifier_list, test_labels_all, pred, proba, label_list)
 
         elif self.classifier_type == 2:
             model1, model2, classifier_list = self.classifier_selection()
@@ -308,7 +308,7 @@ class Trainer():
             self.display_metrics(classifier_list, test_labels_all, pred, proba, label_list)
 
     @staticmethod
-    def display_metrics(self, classifier_list: list, test_labels_all, pred: list, proba: list, label_list: list):
+    def display_metrics(classifier_list: list, test_labels_all, pred: list, proba: list, label_list: list):
         """
         Function that display some metrics in regard of the training results
 
