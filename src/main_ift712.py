@@ -66,8 +66,8 @@ def main():
     image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
 
-    classifier = 'MLP'
-    verbose = False
+    classifier = 'RandomForest'
+    verbose = True
     classifier_type = 2
     cross_validation = False
     train_size = 0.85
