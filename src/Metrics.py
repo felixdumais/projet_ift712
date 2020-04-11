@@ -15,7 +15,7 @@ class Metrics:
 
     def accuracy(self, y_true, y_pred):
         """
-        Function that compute the accuracy on a multiclass-multilabel problem
+        Function that computes the accuracy on a multiclass-multilabel problem
 
         :arg
             self (Metrics): instance of the class

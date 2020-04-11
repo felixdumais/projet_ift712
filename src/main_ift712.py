@@ -54,25 +54,17 @@ def main():
     args = argument_parser()
 
     # Get variables pass with argument parser
-    # classifier = args.model
-    # verbose = args.verbose
-    # cross_validation = args.cv
-    # classifier_type = args.classifier_type
-    # train_size = args.train_size
-    # clf1 = args.clf1
-    # clf2 = args.clf2
+    classifier = args.model
+    verbose = args.verbose
+    cross_validation = args.cv
+    classifier_type = args.classifier_type
+    train_size = args.train_size
+    clf1 = args.clf1
+    clf2 = args.clf2
 
     # Define the path of the images and the targets CSV folder
     image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
-
-    classifier = 'RandomForest'
-    verbose = True
-    classifier_type = 2
-    cross_validation = False
-    train_size = 0.85
-    clf1 = None
-    clf2 = None
 
     if classifier_type != 1 and classifier_type != 2:
         raise OSError('Wrong classifier type. Classifier type must be either 1 or 2')
@@ -105,7 +97,6 @@ def main():
     if clf1 is not None or clf2 is not None:
         # Prediction with already saved models
         trainer.predict_with_saved_model(clf1, clf2)
-
 
     else:
         # Training on images
