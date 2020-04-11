@@ -67,10 +67,10 @@ def main():
     label_full_path = '../data/sample/sample_labels.csv'
 
 
-    classifier = 'LogisticRegressor'
+    classifier = 'RandomForest'
     verbose = True
-    classifier_type = 1
-    cross_validation = True
+    classifier_type = 2
+    cross_validation = False
     train_size = 0.85
     clf1 = None
     clf2 = None
