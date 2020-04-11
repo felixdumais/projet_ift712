@@ -9,7 +9,6 @@ class FisherDiscriminant(Classifier):
     def __init__(self, cv = False):
         super().__init__()
         self.cv = cv
-        self.trained = False
         self.classifier = OneVsRestClassifier(LinearDiscriminantAnalysis(solver='svd', tol=0.01, n_components=12),
                                               n_jobs=-1)
 

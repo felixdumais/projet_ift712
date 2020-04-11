@@ -18,20 +18,20 @@ class MLP(Classifier):
                             activation='relu',
                             solver='adam',
                             alpha=0.01,
-                            batch_size=1000,
-                            learning_rate='adaptive',
+                            batch_size=100,
+                            learning_rate='constant',
                             learning_rate_init=0.001,
                             tol=1e-4,
-                            verbose=True,
-                            max_iter=50,
+                            verbose=False,
+                            max_iter=75,
                             shuffle=True,
-                            warm_start=True,
+                            warm_start=False,
                             early_stopping=True,
                             validation_fraction=0.1,
                             beta_1=0.9,
                             beta_2=0.999,
                             epsilon=1e-8,
-                            n_iter_no_change=10)
+                            n_iter_no_change=20)
 
         self.classifier = OneVsRestClassifier(estimator=mlp, n_jobs=-1)
         self.cv = cv
@@ -55,24 +55,6 @@ class MLP(Classifier):
             self._research_hyperparameter(X_train, y_train)
             print('Done')
         else:
-            # accuracy_train = []
-            # accuracy_test = []
-            # n_iter = self.classifier.estimator.max_iter
-            # X_tr, X_val, y_tr, y_val = train_test_split(X_train, y_train, train_size=0.9)
-            # for i in range(n_iter):
-            #     self.classifier.partial_fit(X_tr, y_tr, classes=np.unique(y_train))
-            #     accuracy_train.append(self.classifier.score(X_val, y_val))
-            #     accuracy_test.append(self.classifier.score(X_tr, X_tr))
-            #
-            # epoch_list = list(range(n_iter))
-            # plt.figure()
-            # plt.xlabel('Epochs')
-            # plt.ylabel('Accuracy')
-            # plt.title('Accuracy evolution')
-            # plt.plot(epoch_list, accuracy_train, label='Train')
-            # plt.plot(epoch_list, accuracy_train, label='Validation')
-            # plt.legend()
-            # plt.show(block=False)
             print('Fitting on MLP Classifier...')
             self.classifier.fit(X_train, y_train)
 

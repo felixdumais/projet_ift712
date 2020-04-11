@@ -54,25 +54,25 @@ def main():
     args = argument_parser()
 
     # Get variables pass with argument parser
-    classifier = args.model
-    verbose = args.verbose
-    cross_validation = args.cv
-    classifier_type = args.classifier_type
-    train_size = args.train_size
-    clf1 = args.clf1
-    clf2 = args.clf2
+    # classifier = args.model
+    # verbose = args.verbose
+    # cross_validation = args.cv
+    # classifier_type = args.classifier_type
+    # train_size = args.train_size
+    # clf1 = args.clf1
+    # clf2 = args.clf2
 
     # Define the path of the images and the targets CSV folder
     image_path = '../data/sample/images'
     label_full_path = '../data/sample/sample_labels.csv'
 
-    # classifier = 'LogisticRegressor'
-    # verbose = True
-    # classifier_type = 1
-    # cross_validation = True
-    # train_size = 0.85
-    # clf1 = None
-    # clf2 = None
+    classifier = 'MLP'
+    verbose = False
+    classifier_type = 2
+    cross_validation = False
+    train_size = 0.85
+    clf1 = None
+    clf2 = None
 
     if classifier_type != 1 and classifier_type != 2:
         raise OSError('Wrong classifier type. Classifier type must be either 1 or 2')
@@ -91,7 +91,7 @@ def main():
         print('Formatting dataset...')
 
     # Instanciate DataHandler
-    data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=32, resampled_height=32)
+    data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=128, resampled_height=128)
 
     # Plot data and samples from the dataset
     data.plot_data()
@@ -114,8 +114,7 @@ def main():
         end = time.time()
         print(end - start)
 
-    plt.show(block=True)
-
+    plt.show()
 
 if __name__ == '__main__':
     main()

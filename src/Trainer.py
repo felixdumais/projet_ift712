@@ -200,6 +200,9 @@ class Trainer():
                         clf1.train(train_image_all, train_labels_bool)
                         clf2 = model2[i]
                         clf2.train(train_image_sick, train_labels_sick)
+                        clf1.save_model(filename=clf1.__class__.__name__ + '_bool')
+                        clf2.save_model(filename=clf2.__class__.__name__ + '_sick')
+
                         prediction_matrix = np.zeros(test_labels_all.shape)
                         proba_matrix = np.zeros(test_labels_all.shape)
 
@@ -220,8 +223,6 @@ class Trainer():
                         pred.append(prediction_matrix)
                         proba.append(proba_matrix)
 
-                        clf1.save_model(filename=clf1.__class__.__name__ + '_bool')
-                        clf2.save_model(filename=clf2.__class__.__name__ + '_sick')
                     except Exception as e:
                         print(e)
                         print('Could not train {}'.format(clf1.__class__.__name__))
@@ -229,6 +230,9 @@ class Trainer():
             else:
                 model1.train(train_image_all, train_labels_bool)
                 model2.train(train_image_sick, train_labels_sick)
+                model1.save_model(filename=model1.__class__.__name__ + '_bool')
+                model2.save_model(filename=model2.__class__.__name__ + '_sick')
+
                 prediction_matrix = np.zeros(test_labels_all.shape)
                 proba_matrix = np.zeros(test_labels_all.shape)
 
@@ -247,9 +251,6 @@ class Trainer():
                 proba_matrix[:, 5] = sick_bool_proba[:, 0]
                 pred = [prediction_matrix]
                 proba = [proba_matrix]
-
-                model1.save_model(filename=model1.__class__.__name__ + '_bool')
-                model2.save_model(filename=model2.__class__.__name__ + '_sick')
 
             label_list = self.data.label_.columns.values.tolist()
             self.display_metrics(classifier_list, test_labels_all, pred, proba, label_list)
