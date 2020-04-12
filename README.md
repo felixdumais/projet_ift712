@@ -12,6 +12,11 @@ Make sure that the kaggle API is correctly installed and that the file kaggle.js
 Make sure that your working directory is /projet_ift712/src.
 
 You can now parse arguments in the terminal to launch the file *main_ift712.py*. To better understand the arguments, launch `python main_ift712.py -h`.
+
+All the source code is in the directory [src](src).
+* [Models](src/models)
+* [main_ift712.py](src/main_ift712.py)
+
 ## Built With
 * [Kaggle API](https://github.com/Kaggle/kaggle-api)
 ## Usage of Kaggle API
