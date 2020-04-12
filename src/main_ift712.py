@@ -83,7 +83,7 @@ def main():
         print('Formatting dataset...')
 
     # Instanciate DataHandler
-    data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=128, resampled_height=128)
+    data = DataHandler(image_path=image_path, label_full_path=label_full_path, resampled_width=32, resampled_height=32)
 
     # Plot data and samples from the dataset
     data.plot_data()
