@@ -9,6 +9,7 @@ import zipfile
 import shutil
 import copy
 import matplotlib.pyplot as plt
+import sys
 
 class DataHandler:
     def __init__(self, label_full_path, image_path, resampled_width=64, resampled_height=64):
@@ -45,11 +46,16 @@ class DataHandler:
 
         zip_file = 'sample.zip'
 
-        print('Extracting zip file from the Kaggle dataset...')
-        with zipfile.ZipFile(zip_file, 'r') as zip_obj:
-            zip_obj.extractall(save_directory)
-
-        os.remove(zip_file)
+        try:
+            print('Extracting zip file from the Kaggle dataset...')
+            with zipfile.ZipFile(zip_file, 'r') as zip_obj:
+                zip_obj.extractall(save_directory)
+            os.remove(zip_file)
+        except FileNotFoundError as e:
+            print('Could not download dataset. Please make sure that you Kaggle API token (kaggle.json) is in '
+                  'the directory ~/.kaggle')
+            print('If your token is in the directory, create a new one.')
+            sys.exit()
         shutil.rmtree('../data/sample/sample')
 
         print('Kaggle dataset extracted extracted')
