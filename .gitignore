@@ -128,4 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+data/sample/
+data/sample.zip
+data/sample_labels.csv
+
 .idea/

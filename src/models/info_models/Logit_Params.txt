@@ -1,0 +1,112 @@
+﻿Penalty : l2 est celui qu'on a vu dans le cours.
+
+dual : Fonctionne juste pour pen=l2 et solver=liblinear.
+       améliore un peu les résultats quand je le met
+
+tol : si la tolérance est trop basse, on rencontre des problèmes de convergence
+      défaut : 0.0001, fonctionne à 0.005 avec max_iter à 200.
+
+max_iter : 1000 est considéré pas mal, 100 par défaut, ça aide à converger
+
+C : paramètre modifié dans grid search. inverse du power de régularisation
+
+fit_intercept : pas d'effet en l2:liblinear
+
+intercept_scaling : juste avec liblinear et fit_intercept:true
+                    pas l'air d'avoir d'effet
+
+class_weight : du meilleur au pire : None, balanced
+               pas essayer dict (faudrait donner le poids à chaque classe)
+
+solver : liblinear est recommendé pour les smalls datasets (je fais mes tests avec 49 images)
+         sag, saga, lbfgs et newton-cg lancent une erreur "'NoneType' object has no attribute 'write'"
+         l'erreur est résolue quand on enlève le multi threading forcé (n_jobs=-1)
+
+Best estimator: OneVsRestClassifier(estimator=LogisticRegression(C=1.0, class_weight='balanced',
+                                                 dual=False,
+                                                 fit_intercept=False,
+                                                 intercept_scaling=1,
+                                                 l1_ratio=None, max_iter=200,
+                                                 multi_class='ovr', n_jobs=-1,
+                                                 penalty='l2',
+                                                 random_state=None,
+                                                 solver='liblinear', tol=0.01,
+                                                 verbose=False,
+                                                 warm_start=False),
+                    n_jobs=-1)
+Best score: 0.15506080445002549
+Best hyperparameters: {'estimator__C': 1.0, 'estimator__class_weight': 'balanced', 'estimator__fit_intercept': False, 'estimator__multi_class': 'ovr', 'estimator__solver': 'liblinear', 'estimator__tol': 0.01}
+Refit time: 3.186736822128296
+Cohen: 0.14883082210510812
+F1: 0.2548656163113994
+Accuracy: 0.7450653983353152
+Precision: 0.1675296984465428
+Recall: 0.5324298160696999
+names              &Cohen              &F1_score           &Accuracy           &Precision          &Recall             
+-------------------------------------------------------------------------------------------------------------
+Emphysema          &-0.0294            &0.0000             &0.7967             &0.0000             &0.0000             
+Infiltration       &0.1296             &0.3397             &0.6302             &0.2477             &0.5405             
+Pleural_Thickening &0.0243             &0.0811             &0.7574             &0.0464             &0.3214             
+Pneumothorax       &0.0385             &0.1186             &0.7348             &0.0711             &0.3571             
+Cardiomegaly       &0.0263             &0.0622             &0.7848             &0.0341             &0.3529             
+No Finding         &0.2458             &0.6497             &0.6243             &0.6751             &0.6261             
+Atelectasis        &0.1115             &0.2286             &0.6790             &0.1423             &0.5797             
+Edema              &0.0359             &0.0656             &0.7967             &0.0355             &0.4286             
+Effusion           &0.1170             &0.2579             &0.6647             &0.1672             &0.5632             
+Consolidation      &0.0341             &0.1085             &0.7265             &0.0636             &0.3684             
+Mass               &0.0129             &0.0823             &0.6552             &0.0459             &0.3939             
+Nodule             &0.0165             &0.1161             &0.6742             &0.0695             &0.3529             
+Fibrosis           &0.0287             &0.0637             &0.8252             &0.0357             &0.2941             
+Pneumonia          &0.0127             &0.0303             &0.8478             &0.0161             &0.2500             
+Hernia             &0.0000             &0.0000             &0.9786             &0.0000             &0.0000  
+
+
+
+
+Type 1
+Cohen: 0.20366922591492131
+F1: 0.2915746292205743
+Accuracy: 0.8220372572334522
+Precision: 0.21629213483146068
+Recall: 0.44724104549854793
+names              &Cohen              &F1_score           &Accuracy           &Precision          &Recall             
+-------------------------------------------------------------------------------------------------------------
+Emphysema          &-0.0268            &0.0000             &0.9013             &0.0000             &0.0000             
+Infiltration       &0.0625             &0.2762             &0.6385             &0.2132             &0.3919             
+Pleural_Thickening &-0.0203            &0.0323             &0.8573             &0.0208             &0.0714             
+Pneumothorax       &-0.0083            &0.0649             &0.8288             &0.0446             &0.1190             
+Cardiomegaly       &0.0318             &0.0638             &0.8954             &0.0390             &0.1765             
+No Finding         &0.1994             &0.6362             &0.6029             &0.6489             &0.6239             
+Atelectasis        &0.0726             &0.1871             &0.7313             &0.1244             &0.3768             
+Edema              &0.0436             &0.0714             &0.8763             &0.0408             &0.2857             
+Effusion           &0.1266             &0.2579             &0.7194             &0.1775             &0.4713             
+Consolidation      &0.0758             &0.1392             &0.8383             &0.0917             &0.2895             
+Mass               &0.0140             &0.0788             &0.7776             &0.0471             &0.2424             
+Nodule             &0.0334             &0.1206             &0.7919             &0.0811             &0.2353             
+Fibrosis           &-0.0300            &0.0000             &0.9275             &0.0000             &0.0000             
+Pneumonia          &-0.0157            &0.0000             &0.9489             &0.0000             &0.0000             
+Hernia             &0.0000             &0.0000             &0.9952             &0.0000             &0.0000             
+
+Type 2
+Cohen: 0.2450819423536561
+F1: 0.3194444444444444
+Accuracy: 0.860166468489893
+Precision: 0.2655548428479795
+Recall: 0.40077444336882867
+names              &Cohen              &F1_score           &Accuracy           &Precision          &Recall             
+-------------------------------------------------------------------------------------------------------------
+Emphysema          &-0.0249            &0.0000             &0.9275             &0.0000             &0.0000             
+Infiltration       &0.0449             &0.2201             &0.7134             &0.2112             &0.2297             
+Pleural_Thickening &-0.0221            &0.0235             &0.9013             &0.0175             &0.0357             
+Pneumothorax       &-0.0160            &0.0500             &0.8644             &0.0385             &0.0714             
+Cardiomegaly       &-0.0047            &0.0267             &0.9132             &0.0172             &0.0588             
+No Finding         &0.1994             &0.6362             &0.6029             &0.6489             &0.6239             
+Atelectasis        &0.1551             &0.2449             &0.8240             &0.1890             &0.3478             
+Edema              &0.0204             &0.0476             &0.9049             &0.0286             &0.1429             
+Effusion           &0.1093             &0.2317             &0.7634             &0.1744             &0.3448             
+Consolidation      &0.1101             &0.1690             &0.8597             &0.1154             &0.3158             
+Mass               &0.0512             &0.1069             &0.8609             &0.0714             &0.2121             
+Nodule             &0.0354             &0.1069             &0.8609             &0.0875             &0.1373             
+Fibrosis           &0.0310             &0.0526             &0.9572             &0.0476             &0.0588             
+Pneumonia          &-0.0151            &0.0000             &0.9560             &0.0000             &0.0000             
+Hernia             &0.0000             &0.0000             &0.9929             &0.0000             &0.0000             
