@@ -37,6 +37,9 @@ To verify that the kaggle API, run the file test/kaggle_API_test.py in your term
 ## Report
 [Report](doc/Rapport_projet_session_IFT712.pdf) that explains the project
 
+## Zenhub
+To see the management page used for this project, login on [Zenhub](https://www.zenhub.com/) with your GitHub account.
+
 ## Authors
 * **Félix Dumais (14053686)** 
 * **Nicolas Fontaine (15203272)** 
